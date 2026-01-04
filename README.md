@@ -12,7 +12,6 @@ A professional, cloud-native automated health insurance adjudication platform. T
 This engine automates the processing of health insurance claims, using a rule-based engine for policy validation and an LLM (Large Language Model) for interpreting complex medical documents. It features a modern Admin Dashboard for real-time monitoring and manual review of flagged claims.
 
 ### Main Adjudication Dashboard Overview:
-
 ```mermaid
 graph TD
     A[Claim Submission] --> B[Document Upload]
@@ -33,25 +32,21 @@ graph TD
 ## ✨ Key Features
 
 ### 1. Multi-Doc AI Extraction
-
 - **Contextual OCR**: Uses **Groq (Llama 3.3 70B)** to cross-verify data between medical bills and prescriptions.
 - **Fraud Detection**: Identifies mismatches in hospital names, dates, or items billed but not prescribed.
 - **Confidence Scoring**: Automatically flags claims for manual review if AI confidence drops below 80%.
 
 ### 2. Ultimate Admin Workspace
-
 - **Split-Screen Review**: Side-by-side view of the original document content vs. the AI-extracted data.
 - **Inline Corrections**: Allows admins to override AI fields or verdicts with manual notes.
 - **Unified Analytics**: Real-time stats on approval rates, money saved, and AI performance.
 
 ### 3. Enterprise-Grade Security
-
 - **JWT Authentication**: Secure user sessions with role-based access.
 - **Document Isolation**: Encrypted storage with granular access controls.
 - **Audit Trails**: Complete log of all decisions and manual interventions.
 
 ### 4. System Metrics Dashboard
-
 - **Real-Time Monitoring**: Track total request volume, API latency, and active requests.
 - **Traffic Analysis**: Visualize response status codes (2xx, 4xx, 5xx) and top API endpoints.
 - **Live Charts**: Dynamic charts powered by Recharts for instant visibility into system health.
@@ -75,13 +70,13 @@ graph TB
     subgraph "User Layer"
         A[Browser/Mobile App]
     end
-
+    
     subgraph "Frontend Services"
         B[Next.js App]
         C[React Components]
         D[Auth Context]
     end
-
+    
     subgraph "Backend Services"
         E[FastAPI Server]
         F[Claim Adjudicator]
@@ -89,12 +84,12 @@ graph TB
         H[Policy Engine]
         I[Document Store]
     end
-
+    
     subgraph "Data Layer"
         J[Supabase DB]
         K[Document Storage]
     end
-
+    
     subgraph "AI Services"
         L[Groq Cloud API]
         M[LLM Processing]
@@ -117,56 +112,32 @@ graph TB
     J --> K
 ```
 
-## 🔄 Adjudication Decision Flow
+## 🔄 Simplified Adjudication Decision Flow
 
-The rules engine processes extracted data through a series of strict validation steps:
+The rules engine processes extracted data through a streamlined validation process:
 
 ```mermaid
-flowchart LR
-    A[Claim Submission] --> B{Documents<br/>Present?}
-    B -->|No| C[Reject:<br/>MISSING_DOCUMENTS]
-    B -->|Yes| D{Documents<br/>Legible?}
-    D -->|No| E[Reject:<br/>ILLEGIBLE_DOCUMENTS]
-    D -->|Yes| F{Doctor Reg<br/>Valid?}
-    F -->|No| G[Reject:<br/>DOCTOR_REG_INVALID]
-    F -->|Yes| H{Patient Details<br/>Match Policy?}
-    H -->|No| I[Reject:<br/>PATIENT_MISMATCH]
-    H -->|Yes| J{Treatment Date<br/>Valid?}
-    J -->|No| K[Reject:<br/>DATE_MISMATCH]
-    J -->|Yes| L{Policy Active<br/>on Treatment Date?}
-    L -->|No| M[Reject:<br/>POLICY_INACTIVE]
-    L -->|Yes| N{Waiting Period<br/>Satisfied?}
-    N -->|No| O[Reject:<br/>WAITING_PERIOD]
-    N -->|Yes| P{Treatment<br/>Covered?}
-    P -->|No| Q[Reject:<br/>SERVICE_NOT_COVERED]
-    P -->|Yes| R{Claim Amount<br/>Within Limits?}
-    R -->|No| S[Reject:<br/>PER_CLAIM_EXCEEDED]
-    R -->|Yes| T{Medical<br/>Necessity Valid?}
-    T -->|No| U[Reject:<br/>NOT_MEDICALLY_NECESSARY]
-    T -->|Yes| V{AI Confidence<br/>>= 80%?}
-    V -->|No| W[Manual Review:<br/>LOW_AI_CONFIDENCE]
-    V -->|Yes| X{Fraud<br/>Indicators?}
-    X -->|Yes| Y[Manual Review:<br/>FRAUD_SUSPECTED]
-    X -->|No| Z{High Value<br/>Claim?}
-    Z -->|Yes| AA[Manual Review:<br/>HIGH_VALUE]
-    Z -->|No| AB[Approve:<br/>Automatic]
-
-    C --> AC[Send Response]
-    E --> AC
-    G --> AC
-    I --> AC
-    K --> AC
-    M --> AC
-    O --> AC
-    Q --> AC
-    S --> AC
-    U --> AC
-    W --> AC
-    Y --> AC
-    AA --> AC
-    AB --> AC
-
-    AC[Send Response<br/>with Details] --> AD[End]
+flowchart TD
+    A[Claim Submission] --> B{Documents Valid?}
+    B -->|No| C[Reject: Missing/Invalid Docs]
+    B -->|Yes| D{Policy Coverage?}
+    D -->|No| E[Reject: Not Covered]
+    D -->|Yes| F{Within Limits?}
+    F -->|No| G[Partial Approval]
+    F -->|Yes| H{AI Confidence High?}
+    H -->|No| I[Manual Review]
+    H -->|Yes| J[Approve Claim]
+    
+    C --> K[Send Response]
+    E --> K
+    G --> L{Fraud Check}
+    L -->|Flagged| I
+    L -->|Clear| G
+    I --> M{Admin Decision}
+    M -->|Approve| J
+    M -->|Reject| E
+    J --> K
+    K[Send Final Decision] --> N[End]
 ```
 
 ## 🏁 Quick Start
@@ -211,7 +182,6 @@ npm run dev
 ## 🛠️ Technical Stack & Key Decisions
 
 ### Frontend (User Experience)
-
 - **Framework**: Next.js 14 with App Router for optimized performance.
 - **Styling**: Tailwind CSS for utility-first styling, ensuring a responsive and modern design.
 - **Animations**: Framer Motion for fluid, professional UI transitions (e.g., entry animations, hover states).
@@ -219,14 +189,12 @@ npm run dev
 - **Design System**: Custom "Enterprise" theme with deep indigo hues, glassmorphism effects, and premium typography (Geist/Geist Mono fonts).
 
 ### Backend (Core Logic)
-
 - **API**: FastAPI (Python) for high-performance, async-ready endpoints.
 - **Data Validation**: Pydantic models for strict data validation and serialization.
 - **Storage**: Supabase (PostgreSQL) for reliable relational data persistence.
 - **Authentication**: JWT-based authentication with secure token handling.
 
 ### Intelligence Layer
-
 - **OCR**: Groq API (Llama 3.3 70B) for context-aware extraction of medical data.
 - **AI Processing**: Advanced LLM integration for cross-document verification.
 - **Rules Engine**: A deterministic Python-based engine that enforces policy limits, exclusions, and co-pays strictly.
@@ -260,21 +228,18 @@ npm run dev
 ### Option 1: Local Development
 
 1. Clone the repository:
-
 ```bash
 git clone https://github.com/NARAsimha654/claim-adjudicator-ai.git
 cd claim-adjudicator-ai
 ```
 
 2. Set up environment variables:
-   Create `.env.local` in the frontend directory:
-
+Create `.env.local` in the frontend directory:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 Create `.env` in the backend directory:
-
 ```env
 GROQ_API_KEY=your_groq_api_key
 SUPABASE_URL=your_supabase_project_url
@@ -283,7 +248,6 @@ SUPABASE_BUCKET=claim-documents
 ```
 
 3. Run the backend:
-
 ```bash
 cd backend
 pip install -r requirements.txt
@@ -291,7 +255,6 @@ uvicorn app.main:app --reload
 ```
 
 4. Run the frontend:
-
 ```bash
 cd frontend
 npm install
@@ -299,14 +262,12 @@ npm run dev
 ```
 
 The application will be available at:
-
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000/docs
 
 ## 🧪 Testing
 
 Run backend tests:
-
 ```bash
 cd backend
 pytest
