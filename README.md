@@ -189,37 +189,6 @@ npm install
 npm run dev
 ```
 
-## 📸 Screenshots
-
-### Admin Dashboard
-The main dashboard provides an overview of claims, approval rates, and system metrics.
-
-```mermaid
-graph LR
-    A[Dashboard Header] --> B[Claims Overview Cards]
-    A --> C[Analytics Charts]
-    B --> D[Claims Table]
-    C --> E[Performance Metrics]
-    D --> F[Action Buttons]
-    E --> G[Trend Analysis]
-    F --> H[Approve/Reject Options]
-    G --> I[Metrics Display]
-```
-
-### Manual Review Interface
-The manual review interface allows admins to examine claims in detail and override AI decisions.
-
-```mermaid
-graph TD
-    A[Claim Details Panel] --> B[Document Preview]
-    A --> C[AI Extraction Results]
-    B --> D[Side-by-Side Comparison]
-    C --> D
-    D --> E[Manual Override Options]
-    E --> F[Decision Buttons]
-    F --> G[Submit Decision]
-```
-
 ## 📊 Admin Dashboard Features:
 
 **Authentication**: Secure login with role-based access control.
