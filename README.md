@@ -117,51 +117,51 @@ graph TB
 The rules engine processes extracted data through a series of strict validation steps:
 
 ```mermaid
-flowchart TD
-    A[Claim Submission] --> B{Documents Present?}
-    B -->|No| C[Reject: MISSING_DOCUMENTS]
-    B -->|Yes| D{All Documents Legible?}
-    D -->|No| E[Reject: ILLEGIBLE_DOCUMENTS]
-    D -->|Yes| F{Doctor Registration Valid?}
-    F -->|No| G[Reject: DOCTOR_REG_INVALID]
-    F -->|Yes| H{Patient Details Match Policy?}
-    H -->|No| I[Reject: PATIENT_MISMATCH]
-    H -->|Yes| J{Treatment Date Valid?}
-    J -->|No| K[Reject: DATE_MISMATCH]
-    J -->|Yes| L{Policy Active on Treatment Date?}
-    L -->|No| M[Reject: POLICY_INACTIVE]
-    L -->|Yes| N{Waiting Period Satisfied?}
-    N -->|No| O[Reject: WAITING_PERIOD]
-    N -->|Yes| P{Treatment Covered?}
-    P -->|No| Q[Reject: SERVICE_NOT_COVERED]
-    P -->|Yes| R{Claim Amount Within Limits?}
-    R -->|No| S[Reject: PER_CLAIM_EXCEEDED]
-    R -->|Yes| T{Medical Necessity Valid?}
-    T -->|No| U[Reject: NOT_MEDICALLY_NECESSARY]
-    T -->|Yes| V{AI Confidence >= 80%?}
-    V -->|No| W[Manual Review: LOW_AI_CONFIDENCE]
-    V -->|Yes| X{Fraud Indicators Present?}
-    X -->|Yes| Y[Manual Review: FRAUD_SUSPECTED]
-    X -->|No| Z{High Value Claim?}
-    Z -->|Yes| AA[Manual Review: HIGH_VALUE]
-    Z -->|No| AB[Approve: Automatic]
+flowchart LR
+    A[Claim Submission] --> B{Documents<br/>Present?}
+    B -->|No| C[Reject:<br/>MISSING_DOCUMENTS]
+    B -->|Yes| D{Documents<br/>Legible?}
+    D -->|No| E[Reject:<br/>ILLEGIBLE_DOCUMENTS]
+    D -->|Yes| F{Doctor Reg<br/>Valid?}
+    F -->|No| G[Reject:<br/>DOCTOR_REG_INVALID]
+    F -->|Yes| H{Patient Details<br/>Match Policy?}
+    H -->|No| I[Reject:<br/>PATIENT_MISMATCH]
+    H -->|Yes| J{Treatment Date<br/>Valid?}
+    J -->|No| K[Reject:<br/>DATE_MISMATCH]
+    J -->|Yes| L{Policy Active<br/>on Treatment Date?}
+    L -->|No| M[Reject:<br/>POLICY_INACTIVE]
+    L -->|Yes| N{Waiting Period<br/>Satisfied?}
+    N -->|No| O[Reject:<br/>WAITING_PERIOD]
+    N -->|Yes| P{Treatment<br/>Covered?}
+    P -->|No| Q[Reject:<br/>SERVICE_NOT_COVERED]
+    P -->|Yes| R{Claim Amount<br/>Within Limits?}
+    R -->|No| S[Reject:<br/>PER_CLAIM_EXCEEDED]
+    R -->|Yes| T{Medical<br/>Necessity Valid?}
+    T -->|No| U[Reject:<br/>NOT_MEDICALLY_NECESSARY]
+    T -->|Yes| V{AI Confidence<br/>>= 80%?}
+    V -->|No| W[Manual Review:<br/>LOW_AI_CONFIDENCE]
+    V -->|Yes| X{Fraud<br/>Indicators?}
+    X -->|Yes| Y[Manual Review:<br/>FRAUD_SUSPECTED]
+    X -->|No| Z{High Value<br/>Claim?}
+    Z -->|Yes| AA[Manual Review:<br/>HIGH_VALUE]
+    Z -->|No| AB[Approve:<br/>Automatic]
     
-    C --> AE[Send Response]
-    E --> AE
-    G --> AE
-    I --> AE
-    K --> AE
-    M --> AE
-    O --> AE
-    Q --> AE
-    S --> AE
-    U --> AE
-    W --> AE
-    Y --> AE
-    AA --> AE
-    AB --> AE
+    C --> AC[Send Response]
+    E --> AC
+    G --> AC
+    I --> AC
+    K --> AC
+    M --> AC
+    O --> AC
+    Q --> AC
+    S --> AC
+    U --> AC
+    W --> AC
+    Y --> AC
+    AA --> AC
+    AB --> AC
     
-    AE[Send Response with Details] --> AF[End]
+    AC[Send Response<br/>with Details] --> AD[End]
 ```
 
 ## 🏁 Quick Start
