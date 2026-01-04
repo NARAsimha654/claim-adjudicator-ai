@@ -224,24 +224,24 @@ export default function ClaimReviewPage() {
                                     <TacticalInput
                                         label="Patient Identifier"
                                         value={editableData?.patient_name}
-                                        onChange={v => setEditableData({ ...editableData, patient_name: v })}
+                                        onChange={(value) => setEditableData({ ...editableData, patient_name: value })}
                                     />
                                     <TacticalInput
                                         label="Clinical Diagnosis"
                                         value={editableData?.diagnosis}
-                                        onChange={v => setEditableData({ ...editableData, diagnosis: v })}
+                                        onChange={(value) => setEditableData({ ...editableData, diagnosis: value })}
                                     />
                                     <TacticalInput
                                         label="Adjudicated Hospital"
                                         value={editableData?.hospital_name}
-                                        onChange={v => setEditableData({ ...editableData, hospital_name: v })}
+                                        onChange={(value) => setEditableData({ ...editableData, hospital_name: value })}
                                         error={claim.claim_data.multi_doc_insights?.hospital_consistency_check === "FAIL"}
                                     />
                                     <TacticalInput
                                         label="Timestamp"
                                         type="date"
                                         value={editableData?.treatment_date}
-                                        onChange={v => setEditableData({ ...editableData, treatment_date: v })}
+                                        onChange={(value) => setEditableData({ ...editableData, treatment_date: value })}
                                     />
                                 </div>
                             </div>
@@ -284,14 +284,14 @@ export default function ClaimReviewPage() {
     )
 }
 
-function TacticalInput({ label, value, onChange, type = "text", error = false }: any) {
+function TacticalInput({ label, value, onChange, type = "text", error = false }: { label: string; value?: string; onChange: (value: string) => void; type?: string; error?: boolean }) {
     return (
         <div className="space-y-3 group">
             <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest group-hover:text-primary transition-colors">{label}</label>
             <Input
                 type={type}
                 value={value || ""}
-                onChange={e => onChange(e.target.value)}
+                onChange={(e) => onChange(e.target.value)}
                 className={cn(
                     "h-14 bg-white/5 border-white/10 rounded-xl text-white font-bold px-5 placeholder:text-muted-foreground/20 focus:ring-primary/50",
                     error ? "border-rose-500/50 bg-rose-500/5 text-rose-400" : "",

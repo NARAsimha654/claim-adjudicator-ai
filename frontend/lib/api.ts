@@ -7,7 +7,7 @@ export interface AdjudicationResponse {
     confidence_score: number;
     rejection_reasons: string[];
     failed_rules: string[];
-    decision_trace: Array<{ step: string; status: "PASS" | "FAIL" | "FLAG"; reason: string }>;
+    decision_trace: Array<{ step: string; status: "PASS" | "FAIL" | "FLAG"; reason: string; note?: string }>;
     notes?: string;
     next_steps?: string;
 }

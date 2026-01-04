@@ -29,3 +29,5 @@ temp_uploads/
 temp_reports/
 backend/temp_uploads/
 backend/temp_reports/
+.vercel
+.env*.local

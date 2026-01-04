@@ -283,7 +283,7 @@ export function AdjudicationResult({ data }: ResultProps) {
                                             )} />
                                             <div className="space-y-1">
                                                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-tighter">{step.step}</p>
-                                                <p className="text-sm font-medium text-white/80 leading-relaxed uppercase">{step.note || step.reason}</p>
+                                                <p className="text-sm font-medium text-white/80 leading-relaxed uppercase">{step.reason}</p>
                                             </div>
                                         </div>
                                     ))}
