@@ -31,3 +31,6 @@ backend/temp_uploads/
 backend/temp_reports/
 .vercel
 .env*.local
+
+# Assignment files
+Given/
