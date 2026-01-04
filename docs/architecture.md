@@ -2,91 +2,88 @@
 
 ## System Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              PLUM CLAIM ADJUDICATOR AI                          │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐            │
-│  │   USER LAYER    │    │  APPLICATION    │    │  INFRASTRUCTURE │            │
-│  │                 │    │     LAYER       │    │      LAYER      │            │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘            │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐            │
-│  │   BROWSER/      │    │   NEXT.JS       │    │   VERCEL        │            │
-│  │   MOBILE APP    │◄──►│   FRONTEND      │◄──►│   HOSTING       │            │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘            │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │    ┌─────────────────────────────────────────────┐                   │
-│         │    │            API GATEWAY LAYER              │                   │
-│         │    │         (FastAPI + CORS)                  │                   │
-│         │    └─────────────────────────────────────────────┘                   │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐            │
-│  │   CLAIM FORM    │    │  CLAIM ADJUDICATOR│    │   RENDER        │        │
-│  │   SUBMISSION    │◄──►│   SERVICE       │◄──►│   BACKEND       │            │
-│  │                 │    │                 │    │   DEPLOYMENT    │            │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘            │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │    ┌─────────────────────────────────────────────┐                   │
-│         │    │           EXTERNAL SERVICES               │                   │
-│         │    └─────────────────────────────────────────────┘                   │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐            │
-│  │   GROQ CLOUD    │    │   SUPABASE      │    │   DOCUMENT      │            │
-│  │   (AI/LLM)      │    │   DATABASE      │    │   STORAGE       │            │
-│  │                 │    │                 │    │                 │            │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘            │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-│         │                        │                        │                    │
-└─────────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph "User Layer"
+        A[Browser/Mobile App]
+    end
+
+    subgraph "Application Layer"
+        B[Next.js Frontend]
+        C[FastAPI Backend]
+    end
+
+    subgraph "Infrastructure Layer"
+        D[Vercel Hosting]
+        E[Render Backend]
+    end
+
+    subgraph "AI/ML Services"
+        F[Groq Cloud AI]
+        G[Document Processing]
+    end
+
+    subgraph "Data Layer"
+        H[Supabase Database]
+        I[Document Storage]
+    end
+
+    A <---> B
+    B <---> C
+    C <---> D
+    C <---> E
+    C <---> F
+    C <---> G
+    C <---> H
+    C <---> I
+    F <---> G
+    H <---> I
 ```
 
 ## Component Interaction Flow
 
 ### 1. Claim Submission Flow
 
-```
-User → Frontend → Backend API → AI Extraction → Policy Validation → Decision Engine → Database → Response to Frontend → User
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant B as Backend
+    participant AI as AI Service
+    participant DB as Database
+
+    U->>F: Submit Claim with Documents
+    F->>B: Send Claim Data
+    B->>AI: Process Documents
+    AI->>B: Return Extracted Data
+    B->>B: Apply Policy Rules
+    B->>DB: Store Decision
+    B->>F: Return Decision
+    F->>U: Display Result
 ```
 
 ### 2. Document Processing Flow
 
-```
-Document Upload → AI Service → Text Extraction → Data Validation → Rule Engine → Decision Trace → Database Storage
+```mermaid
+flowchart TD
+    A[Document Upload] --> B[OCR Processing]
+    B --> C[Text Extraction]
+    C --> D[Data Validation]
+    D --> E[Rule Engine]
+    E --> F[Decision Trace]
+    F --> G[Database Storage]
 ```
 
 ### 3. Decision Override Flow
 
-```
-Admin Review → Frontend → Backend API → Decision Override → Database Update → Audit Trail → Notification
+```mermaid
+flowchart TD
+    A[Admin Review] --> B[Frontend UI]
+    B --> C[Backend API]
+    C --> D[Decision Override]
+    D --> E[Database Update]
+    E --> F[Audit Trail]
+    F --> G[Notification]
 ```
 
 ## Technology Stack Layers
@@ -127,14 +124,22 @@ Admin Review → Frontend → Backend API → Decision Override → Database Upd
 
 ### Authentication Flow
 
-```
-User Login → JWT Token Generation → Token Validation → Session Management → Role-based Access Control
+```mermaid
+flowchart TD
+    A[User Login] --> B[JWT Token Generation]
+    B --> C[Token Validation]
+    C --> D[Session Management]
+    D --> E[Role-based Access Control]
 ```
 
 ### Document Security
 
-```
-Upload → Encryption → Secure Storage → Access Control → Audit Trail
+```mermaid
+flowchart TD
+    A[Upload] --> B[Encryption]
+    B --> C[Secure Storage]
+    C --> D[Access Control]
+    D --> E[Audit Trail]
 ```
 
 ## Scalability Considerations
@@ -156,18 +161,33 @@ Upload → Encryption → Secure Storage → Access Control → Audit Trail
 
 ### Claim Data Flow
 
-```
-Claim Submission → Validation → AI Processing → Rule Engine → Decision → Storage → Audit Trail
+```mermaid
+flowchart LR
+    A[Claim Submission] --> B[Validation]
+    B --> C[AI Processing]
+    C --> D[Rule Engine]
+    D --> E[Decision]
+    E --> F[Storage]
+    F --> G[Audit Trail]
 ```
 
 ### Document Data Flow
 
-```
-Document Upload → OCR Processing → Text Extraction → Data Structuring → Validation → Storage
+```mermaid
+flowchart LR
+    A[Document Upload] --> B[OCR Processing]
+    B --> C[Text Extraction]
+    C --> D[Data Structuring]
+    D --> E[Validation]
+    E --> F[Storage]
 ```
 
 ### Audit Data Flow
 
-```
-User Action → Event Logging → Audit Trail → Database Storage → Reporting
+```mermaid
+flowchart LR
+    A[User Action] --> B[Event Logging]
+    B --> C[Audit Trail]
+    C --> D[Database Storage]
+    D --> E[Reporting]
 ```
