@@ -9,6 +9,12 @@ A professional, cloud-native automated health insurance adjudication platform. T
 
 ---
 
+## 🌐 Live Deployment
+- **Frontend App**: [https://claim-adjudicator-ai.vercel.app/](https://claim-adjudicator-ai.vercel.app/)
+- **Backend API**: [https://adjudicator-backend.onrender.com](https://adjudicator-backend.onrender.com)
+
+---
+
 ## 🚀 Key Features
 
 ### 1. **Multi-Doc AI Extraction**
@@ -98,7 +104,7 @@ npm run dev
 | `SUPABASE_URL` | Your Supabase project URL |
 | `SUPABASE_KEY` | Your Supabase Anon Public Key |
 | `SUPABASE_BUCKET` | Name of your storage bucket (default: `claim-documents`) |
-| `NEXT_PUBLIC_API_URL` | URL of the backend (e.g., `http://127.0.0.1:8000`) |
+| `NEXT_PUBLIC_API_URL` | URL of the backend (e.g., `https://adjudicator-backend.onrender.com`) |
 
 ---
 
