@@ -1,0 +1,70 @@
+--------------------------------
+Apollo Hospitals
+123 Healthcare Avenue, Bangalore
+GST No: 12ABCDE1234F1Z5
+--------------------------------
+Bill No: APH20260105001        Date: 05/01/2026
+
+Patient Details:
+Name: Arjun Reddy
+Contact: 9876543220
+Ref. By: Dr. Nair
+
+PARTICULARS               AMOUNT
+--------------------------------
+Consultation Fee          ₹ 600
+Medicines                ₹ 450
+--------------------------------
+Sub Total:               ₹ 1050
+GST (18%):              ₹ 189
+--------------------------------
+TOTAL:                   ₹ 1239
+Amount in Words: One Thousand Two Hundred and Thirty Nine Only
+
+Payment Mode: Cash
+Transaction ID: TXN20260105001
+
+[Authorized Signatory]
+[Stamp]
+--------------------------------
+
+Prescription:
+--------------------------------
+[Logo]
+Dr. Nair, MD General Medicine
+Reg. No: KA/98765/2016
+Apollo Hospitals, Bangalore
+Phone: 080-98765432
+--------------------------------
+Date: 05/01/2026
+
+Patient Name: Arjun Reddy
+Age/Sex: 42/Male
+Address: 78, Indiranagar, Bangalore
+
+Chief Complaints:
+- Mild headache
+- Fatigue
+
+Diagnosis:
+Stress related headache
+
+Rx (Prescription):
+1. Tab. Paracetamol 500mg
+   Twice daily x 2 days
+2. Tab. Vitamin B complex
+   Once daily x 5 days
+
+Investigations Advised:
+- None
+
+Follow-up: 07/01/2026
+
+[Doctor's Signature]
+[Doctor's Stamp]
+--------------------------------
+
+Patient Insurance Details:
+Policy ID: PLUM_OPD_2024
+Member ID: EMP017
+Policy Status: Active

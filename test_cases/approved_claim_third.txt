@@ -1,0 +1,72 @@
+--------------------------------
+Fortis Healthcare
+789 Medical Complex, Hyderabad
+GST No: 28ABCDF1234H2Z6
+--------------------------------
+Bill No: FHC20260105003        Date: 05/01/2026
+
+Patient Details:
+Name: Vikram Seth
+Contact: 8234567803
+Ref. By: Dr. Patel
+
+PARTICULARS               AMOUNT
+--------------------------------
+Consultation Fee          ₹ 800
+Diagnostic Tests:
+- X-Ray Chest            ₹ 400
+Medicines                ₹ 600
+--------------------------------
+Sub Total:               ₹ 1800
+GST (18%):              ₹ 324
+--------------------------------
+TOTAL:                   ₹ 2124
+Amount in Words: Two Thousand One Hundred and Twenty Four Only
+
+Payment Mode: UPI
+Transaction ID: TXN20260105003
+
+[Authorized Signatory]
+[Stamp]
+--------------------------------
+
+Prescription:
+--------------------------------
+[Logo]
+Dr. Patel, MD Internal Medicine
+Reg. No: TS/34567/2019
+Fortis Healthcare, Hyderabad
+Phone: 040-34567890
+--------------------------------
+Date: 05/01/2026
+
+Patient Name: Vikram Seth
+Age/Sex: 35/Male
+Address: 101, Banjara Hills, Hyderabad
+
+Chief Complaints:
+- Persistent cough
+- Mild chest discomfort
+
+Diagnosis:
+Acute bronchitis
+
+Rx (Prescription):
+1. Tab. Azithromycin 500mg
+   Once daily x 5 days
+2. Syr. Ambroxol 30mg
+   Three times daily x 5 days
+
+Investigations Advised:
+- Chest X-ray
+
+Follow-up: 10/01/2026
+
+[Doctor's Signature]
+[Doctor's Stamp]
+--------------------------------
+
+Patient Insurance Details:
+Policy ID: PLUM_OPD_2024
+Member ID: EMP019
+Policy Status: Active

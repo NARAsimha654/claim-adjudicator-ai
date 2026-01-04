@@ -3,7 +3,7 @@ Wellness Clinic
 45 Beauty Street, Mumbai
 GST No: 27XYZAB4567G2Z8
 --------------------------------
-Bill No: WLC20260104002        Date: 04/01/2026
+Bill No: WLC20260104006        Date: 04/01/2026
 
 Patient Details:
 Name: Anita Desai
@@ -24,7 +24,7 @@ TOTAL:                   ₹ 35400
 Amount in Words: Thirty Five Thousand Four Hundred Only
 
 Payment Mode: Card
-Transaction ID: TXN20260104002
+Transaction ID: TXN20260104006
 
 [Authorized Signatory]
 [Stamp]
