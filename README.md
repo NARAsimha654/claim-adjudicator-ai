@@ -5,124 +5,111 @@
 [![Supabase](https://img.shields.io/badge/Database-Supabase-green)](https://supabase.com)
 [![AI](https://img.shields.io/badge/AI-Groq%20%2F%20Llama3-orange)](https://groq.com)
 
-This engine automates the processing of health insurance claims, using a rule-based engine for policy validation and an LLM (Large Language Model) for interpreting complex medical documents. It features a modern Admin Dashboard for real-time monitoring and manual review of flagged claims.
+A professional, cloud-native automated health insurance adjudication platform. This system processes medical documents using AI, validates them against strict insurance policies, and provides a high-fidelity workspace for human-in-the-loop review.
 
 ## 🚀 Overview
 
 This engine automates the processing of health insurance claims, using a rule-based engine for policy validation and an LLM (Large Language Model) for interpreting complex medical documents. It features a modern Admin Dashboard for real-time monitoring and manual review of flagged claims.
 
 ### Main Adjudication Dashboard Overview:
-
 ```mermaid
 graph TD
     A[Claim Submission] --> B[Document Upload]
-    B --> C[AI Processing]
-    C --> D[Policy Validation]
+    B --> C[AI Processing with Groq Llama 3.3 70B]
+    C --> D[Policy Validation against JSON Rules]
     D --> E{Decision Engine}
-    E -->|Approved| F[Approve Claim]
-    E -->|Rejected| G[Reject Claim]
-    E -->|Manual Review| H[Admin Dashboard]
-    H --> I[Human Decision]
+    E -->|Approved| F[Approve Claim with Confidence Score]
+    E -->|Rejected| G[Reject Claim with Reasoning]
+    E -->|Manual Review| H[Admin Review Dashboard]
+    H --> I[Human Decision Override]
     I --> J[Final Decision]
     F --> K[Payment Processing]
-    G --> L[Notification]
+    G --> L[Claimant Notification]
     J --> K
     J --> L
 ```
 
 ## ✨ Key Features
 
-### 1. Automated Adjudication
+### 1. Multi-Doc AI Extraction
+- **Contextual OCR**: Uses **Groq (Llama 3.3 70B)** to cross-verify data between medical bills and prescriptions.
+- **Fraud Detection**: Identifies mismatches in hospital names, dates, or items billed but not prescribed.
+- **Confidence Scoring**: Automatically flags claims for manual review if AI confidence drops below 80%.
 
-**Rule Engine**: Validates claims against policy terms (min/max amounts, exclusions).
+### 2. Ultimate Admin Workspace
+- **Split-Screen Review**: Side-by-side view of the original document content vs. the AI-extracted data.
+- **Inline Corrections**: Allows admins to override AI fields or verdicts with manual notes.
+- **Unified Analytics**: Real-time stats on approval rates, money saved, and AI performance.
 
-**AI Analysis**: Uses LLMs to extract and verify diagnosis codes and treatment details from medical documents.
+### 3. Enterprise-Grade Security
+- **JWT Authentication**: Secure user sessions with role-based access.
+- **Document Isolation**: Encrypted storage with granular access controls.
+- **Audit Trails**: Complete log of all decisions and manual interventions.
 
-**Instant Decisions**: Automatically approves or rejects clear-cut cases.
-
-### 2. Manual Review Workflow
-
-**Human-in-the-Loop**: Flagged claims (e.g., low confidence, high value) are routed to a review queue.
-
-**Decision Support**: Reviewers see a side-by-side view of the claim data and the AI's analysis.
-
-**One-Click Actions**: Approve or reject claims directly from the UI.
-
-### 3. System Metrics Dashboard
-
-**Real-Time Monitoring**: Track total request volume, API latency, and active requests.
-
-**Traffic Analysis**: Visualize response status codes (2xx, 4xx, 5xx) and top API endpoints.
-
-**Live Charts**: Dynamic charts powered by Recharts for instant visibility into system health.
-
-```mermaid
-graph LR
-    A[Incoming Claims] --> B[Processing Queue]
-    B --> C{System Status}
-    C -->|Healthy| D[Low Latency]
-    C -->|Warning| E[Medium Latency]
-    C -->|Critical| F[High Latency]
-    D --> G[Success Metrics]
-    E --> H[Warning Metrics]
-    F --> I[Error Metrics]
-    G --> J[Dashboard Update]
-    H --> J
-    I --> J
-```
+### 4. System Metrics Dashboard
+- **Real-Time Monitoring**: Track total request volume, API latency, and active requests.
+- **Traffic Analysis**: Visualize response status codes (2xx, 4xx, 5xx) and top API endpoints.
+- **Live Charts**: Dynamic charts powered by Recharts for instant visibility into system health.
 
 ## 🛠️ Tech Stack
 
-**Backend**: Python, FastAPI, Pydantic (Data Validation), Supabase (Database)
+**Frontend**: Next.js 14, TypeScript, Tailwind CSS, Recharts, Radix UI, Framer Motion
 
-**Frontend**: Next.js, TypeScript, Tailwind CSS, Recharts, Radix UI
+**Backend**: Python, FastAPI, Pydantic, Supabase (Database)
 
-**AI/ML**: Groq API (LLM), OCR for document processing
+**AI/ML**: Groq API (Llama 3.3 70B), OCR for document processing
 
 **Infrastructure**: Vercel (Frontend), Render (Backend), Supabase (Database/Storage)
 
 ## 🏗️ System Architecture
 
-The system follows a modern Event-Driven Microservices Architecture, ensuring scalability, fault tolerance, and asynchronous processing.
+The system follows a modern microservices architecture with clear separation of concerns:
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        A[Next.js UI]
-        B[React Components]
-        C[API Client]
+    subgraph "User Layer"
+        A[Browser/Mobile App]
     end
-
+    
+    subgraph "Frontend Services"
+        B[Next.js App]
+        C[React Components]
+        D[Auth Context]
+    end
+    
     subgraph "Backend Services"
-        D[FastAPI Server]
-        E[Claim Processing]
-        F[AI/LLM Service]
-        G[Rule Engine]
+        E[FastAPI Server]
+        F[Claim Adjudicator]
+        G[AI Extractor Service]
+        H[Policy Engine]
+        I[Document Store]
     end
-
+    
     subgraph "Data Layer"
-        H[Supabase DB]
-        I[Document Storage]
-        J[JWT Auth]
+        J[Supabase DB]
+        K[Document Storage]
+    end
+    
+    subgraph "AI Services"
+        L[Groq Cloud API]
+        M[LLM Processing]
     end
 
-    subgraph "External Services"
-        K[Groq API]
-        L[OCR Service]
-    end
-
-    A --> C
-    C --> D
-    D --> E
+    A --> B
+    B --> E
+    C --> B
+    D --> B
     E --> F
     E --> G
     E --> H
     E --> I
-    D --> J
-    F --> K
-    F --> L
-    G --> H
+    F --> J
+    G --> L
+    G --> M
+    H --> J
     I --> K
+    L --> M
+    J --> K
 ```
 
 ## 🔄 Adjudication Decision Flow
@@ -158,7 +145,7 @@ flowchart TD
     X -->|No| Z{High Value Claim?}
     Z -->|Yes| AA[Manual Review: HIGH_VALUE]
     Z -->|No| AB[Approve: Automatic]
-
+    
     C --> AE[Send Response]
     E --> AE
     G --> AE
@@ -173,7 +160,7 @@ flowchart TD
     Y --> AE
     AA --> AE
     AB --> AE
-
+    
     AE[Send Response with Details] --> AF[End]
 ```
 
@@ -184,6 +171,7 @@ flowchart TD
 - Python 3.10+
 - Node.js 18+
 - Git
+- Groq API Key
 
 ### Backend Setup
 
@@ -204,20 +192,22 @@ npm run dev
 ## 📸 Screenshots
 
 ### Admin Dashboard
+The main dashboard provides an overview of claims, approval rates, and system metrics.
 
 ```mermaid
 graph LR
-    A[Dashboard Header] --> B[Claims Overview]
-    A --> C[Analytics Cards]
+    A[Dashboard Header] --> B[Claims Overview Cards]
+    A --> C[Analytics Charts]
     B --> D[Claims Table]
-    C --> E[Charts Section]
+    C --> E[Performance Metrics]
     D --> F[Action Buttons]
     E --> G[Trend Analysis]
-    F --> H[Approve/Reject]
+    F --> H[Approve/Reject Options]
     G --> I[Metrics Display]
 ```
 
 ### Manual Review Interface
+The manual review interface allows admins to examine claims in detail and override AI decisions.
 
 ```mermaid
 graph TD
@@ -247,21 +237,19 @@ graph TD
 ## 🛠️ Technical Stack & Key Decisions
 
 ### Frontend (User Experience)
-
 - **Framework**: Next.js 14 with App Router for optimized performance.
 - **Styling**: Tailwind CSS for utility-first styling, ensuring a responsive and modern design.
-- **State Management**: React Hooks (useState, useEffect) for local state with Context API for global state.
-- **Design System**: Custom "Enterprise" theme with deep indigo hues, glassmorphism effects, and premium typography.
+- **Animations**: Framer Motion for fluid, professional UI transitions (e.g., entry animations, hover states).
+- **State Management**: React Hooks (useState, useEffect) for local state; Context API for global state management.
+- **Design System**: Custom "Enterprise" theme with deep indigo hues, glassmorphism effects, and premium typography (Geist/Geist Mono fonts).
 
 ### Backend (Core Logic)
-
 - **API**: FastAPI (Python) for high-performance, async-ready endpoints.
 - **Data Validation**: Pydantic models for strict data validation and serialization.
 - **Storage**: Supabase (PostgreSQL) for reliable relational data persistence.
 - **Authentication**: JWT-based authentication with secure token handling.
 
 ### Intelligence Layer
-
 - **OCR**: Groq API (Llama 3.3 70B) for context-aware extraction of medical data.
 - **AI Processing**: Advanced LLM integration for cross-document verification.
 - **Rules Engine**: A deterministic Python-based engine that enforces policy limits, exclusions, and co-pays strictly.
@@ -295,21 +283,18 @@ graph TD
 ### Option 1: Local Development
 
 1. Clone the repository:
-
 ```bash
 git clone https://github.com/NARAsimha654/claim-adjudicator-ai.git
 cd claim-adjudicator-ai
 ```
 
 2. Set up environment variables:
-   Create `.env.local` in the frontend directory:
-
+Create `.env.local` in the frontend directory:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 Create `.env` in the backend directory:
-
 ```env
 GROQ_API_KEY=your_groq_api_key
 SUPABASE_URL=your_supabase_project_url
@@ -318,7 +303,6 @@ SUPABASE_BUCKET=claim-documents
 ```
 
 3. Run the backend:
-
 ```bash
 cd backend
 pip install -r requirements.txt
@@ -326,7 +310,6 @@ uvicorn app.main:app --reload
 ```
 
 4. Run the frontend:
-
 ```bash
 cd frontend
 npm install
@@ -334,18 +317,12 @@ npm run dev
 ```
 
 The application will be available at:
-
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000/docs
-
-### Option 2: Using Docker (Coming Soon)
-
-Docker configuration will be added in future releases for easier deployment.
 
 ## 🧪 Testing
 
 Run backend tests:
-
 ```bash
 cd backend
 pytest
