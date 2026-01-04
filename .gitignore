@@ -33,6 +33,5 @@ backend/temp_reports/
 .env*.local
 
 Given/
-
 # Assignment files
 Given/
