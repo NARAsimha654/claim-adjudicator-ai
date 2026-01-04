@@ -1,0 +1,19 @@
+CITY GENERAL HOSPITAL
+Date: 2026-08-01
+Patient Name: Alice Wonderland (Member ID: EMP9988)
+Diagnosis: Seasonal Allergies
+
+BILL DETAILS:
+1. Consultation Fee (Dr. Strange)    INR 1,000.00
+2. Lab: Allergy Panel (Total IgE)    INR 1,500.00
+
+TOTAL AMOUNT: INR 2,500.00
+
+Doctor Registration: MH/556677/2018
+Address: Hospital Road, Bangalore
+--------------------------------------------------
+PRESCRIPTION NOTES: (ATTACHED)
+Clinic: WONDERLAND HEALTH CLINIC
+Patient: Alice Wonderland
+Diagnosis: Hay Fever
+Signed: Dr. White (MH/556677/2018)

@@ -1,0 +1,20 @@
+METRO SPECIALTY HOSPITAL
+Date: 2026-07-10
+Patient Name: Robert Brown (Member ID: EMP5566)
+Diagnosis: Chronic Osteoarthritis Follow-up
+
+BILL DETAILS:
+1. Specialist Specialist Consultation INR  1,500.00
+2. Advanced MRI (Knee - Left)        INR  9,500.00
+3. Advanced MRI (Knee - Right)       INR  9,500.00
+4. Physiotherapy (10 Sessions)       INR  7,500.00
+
+TOTAL AMOUNT: INR 28,000.00
+
+Doctor Registration: ORTHO/112233/2010
+Address: Hospital Hub, Mumbai, Maharashtra
+--------------------------------------------------
+PRESCRIPTION NOTES:
+Patient: Robert Brown
+Required: Bilateral MRI Knee, followed by Physiotherapy.
+Signed: Dr. Kapadia
