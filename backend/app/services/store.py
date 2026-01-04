@@ -108,8 +108,8 @@ class ClaimStore:
                 "status_breakdown": {"APPROVED": 0, "REJECTED": 0, "MANUAL_REVIEW": 0, "PARTIAL": 0}
             }
 
-        total_value = sum(float(c["claim_data"]["total_claimed_amount"]) for c in claims)
-        approved_value = sum(float(c["decision"]["approved_amount"]) for c in claims)
+        total_value = sum(float(c.get("claim_data", {}).get("total_claimed_amount", 0)) for c in claims)
+        approved_value = sum(float(c.get("decision", {}).get("approved_amount", 0)) for c in claims)
         money_saved = total_value - approved_value
         
         status_counts = {"APPROVED": 0, "REJECTED": 0, "MANUAL_REVIEW": 0, "PARTIAL": 0}

@@ -29,21 +29,26 @@ class PolicySimulator:
         }
         
         for record in historical_records:
-            # Reconstruct NormalizedClaim from stored dict
-            # In a real app we'd use Pydantic parse_obj
-            claim_data = record["claim_data"]
-            normalized_claim = NormalizedClaim(**claim_data)
-            
-            # 1. Original Stats
-            old_total_approved += record["decision"]["approved_amount"]
-            total_claimed += claim_data["total_claimed_amount"]
-            
-            # 2. Simulated Adjudication
-            sim_decision = simulator_engine.adjudicate(normalized_claim)
-            new_total_approved += sim_decision.approved_amount
-            
-            # Track status migration
-            impact_by_verdict[str(sim_decision.verdict.value)] += 1
+            try:
+                # Reconstruct NormalizedClaim from stored dict
+                claim_data = record["claim_data"]
+                normalized_claim = NormalizedClaim(**claim_data)
+                
+                # 1. Original Stats (safe access)
+                old_val = record.get("decision", {}).get("approved_amount", 0.0)
+                old_total_approved += float(old_val)
+                total_claimed += float(claim_data.get("total_claimed_amount", 0.0))
+                
+                # 2. Simulated Adjudication
+                sim_decision = simulator_engine.adjudicate(normalized_claim)
+                new_total_approved += sim_decision.approved_amount
+                
+                # Track status migration (ensure string key)
+                verdict_str = str(sim_decision.verdict.value)
+                impact_by_verdict[verdict_str] = impact_by_verdict.get(verdict_str, 0) + 1
+            except Exception as e:
+                print(f"[SIMULATOR] Error processing record: {e}")
+                continue
 
         delta = new_total_approved - old_total_approved
         savings_change = (new_total_approved / old_total_approved - 1) * 100 if old_total_approved > 0 else 0

@@ -1,0 +1,74 @@
+--------------------------------
+Fortis Healthcare
+56 Medical Complex, Chennai
+GST No: 33ABCDE1234F1Z5
+--------------------------------
+Bill No: FHC20260104004        Date: 04/01/2026
+
+Patient Details:
+Name: Priya Sharma
+Contact: 9876543211
+Ref. By: Dr. Raghavan
+
+PARTICULARS               AMOUNT
+--------------------------------
+Consultation Fee          ₹ 600
+Diagnostic Tests:
+- Blood Test             ₹ 500
+- Urine Test             ₹ 300
+Medicines                ₹ 450
+--------------------------------
+Sub Total:               ₹ 1850
+GST (18%):              ₹ 333
+--------------------------------
+TOTAL:                   ₹ 2183
+Amount in Words: Two Thousand One Hundred and Eighty Three Only
+
+Payment Mode: Card
+Transaction ID: TXN20260104004
+
+[Authorized Signatory]
+[Stamp]
+--------------------------------
+
+Prescription:
+--------------------------------
+[Logo]
+Dr. Raghavan, MD Pediatrics
+Reg. No: TN/78901/2019
+Fortis Healthcare, Chennai
+Phone: 044-12345678
+--------------------------------
+Date: 04/01/2026
+
+Patient Name: Priya Sharma
+Age/Sex: 28/Female
+Address: 102, T Nagar, Chennai
+
+Chief Complaints:
+- Mild fever
+- Sore throat
+
+Diagnosis:
+Upper respiratory tract infection
+
+Rx (Prescription):
+1. Tab. Paracetamol 500mg
+   Three times daily x 3 days
+2. Syr. Cetirizine 5mg
+   Once daily x 5 days
+
+Investigations Advised:
+- CBC
+- Urine routine
+
+Follow-up: 08/01/2026
+
+[Doctor's Signature]
+[Doctor's Stamp]
+--------------------------------
+
+Patient Insurance Details:
+Policy ID: PLUM_OPD_2024
+Member ID: EMP011
+Policy Status: Active

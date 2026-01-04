@@ -1,13 +1,25 @@
 "use client"
 
 import * as React from "react"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { AdjudicationResponse } from "@/lib/api"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { useAuth } from "@/context/AuthContext"
-import { Mail, Phone, Send, Clock, CheckCircle, XCircle, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react"
+import {
+    Mail,
+    Send,
+    Clock,
+    CheckCircle,
+    XCircle,
+    AlertTriangle,
+    ChevronDown,
+    ChevronUp,
+    Download,
+    FileText,
+    ShieldCheck,
+    BarChart3
+} from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -21,24 +33,34 @@ export function AdjudicationResult({ data }: ResultProps) {
     const [isSubmitted, setIsSubmitted] = React.useState(false)
     const { role } = useAuth()
 
-    const getStatusColor = (verdict: string) => {
+    const getStatusTheme = (verdict: string) => {
         switch (verdict) {
-            case "APPROVED": return "bg-green-100 text-green-800 border-green-200"
-            case "REJECTED": return "bg-red-100 text-red-800 border-red-200"
-            case "MANUAL_REVIEW": return "bg-yellow-100 text-yellow-800 border-yellow-200"
-            default: return "bg-gray-100 text-gray-800"
+            case "APPROVED": return {
+                color: "text-emerald-400",
+                bg: "bg-emerald-500/10",
+                border: "border-emerald-500/20",
+                glow: "shadow-emerald-500/20",
+                icon: <CheckCircle className="w-16 h-16 text-emerald-400" />
+            }
+            case "REJECTED": return {
+                color: "text-rose-400",
+                bg: "bg-rose-500/10",
+                border: "border-rose-500/20",
+                glow: "shadow-rose-500/20",
+                icon: <XCircle className="w-16 h-16 text-rose-400" />
+            }
+            default: return {
+                color: "text-amber-400",
+                bg: "bg-amber-500/10",
+                border: "border-amber-500/20",
+                glow: "shadow-amber-500/20",
+                icon: <Clock className="w-16 h-16 text-amber-400" />
+            }
         }
     }
 
-    const getIcon = (verdict: string) => {
-        switch (verdict) {
-            case "APPROVED": return <CheckCircle className="w-12 h-12 text-green-600 mb-4" />
-            case "REJECTED": return <XCircle className="w-12 h-12 text-red-600 mb-4" />
-            default: return <AlertTriangle className="w-12 h-12 text-yellow-600 mb-4" />
-        }
-    }
+    const theme = getStatusTheme(data.verdict)
 
-    // Guest Landing for Manual Review
     if (role === "guest" && data.verdict === "MANUAL_REVIEW") {
         return (
             <motion.div
@@ -46,52 +68,51 @@ export function AdjudicationResult({ data }: ResultProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 className="w-full max-w-2xl mx-auto"
             >
-                <Card className="border-t-8 border-yellow-500 shadow-2xl overflow-hidden">
-                    <CardContent className="p-10 text-center">
-                        <div className="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <Clock className="w-10 h-10 text-yellow-600" />
-                        </div>
+                <div className="glass-card rounded-[2.5rem] border-t-8 border-amber-500/50 p-12 text-center">
+                    <div className="w-24 h-24 bg-amber-500/10 rounded-[2rem] flex items-center justify-center mx-auto mb-8 ring-1 ring-amber-500/20">
+                        <Clock className="w-12 h-12 text-amber-500" />
+                    </div>
 
-                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Under Review</h2>
-                        <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-                            Our AI detected some ambiguities in your bill. A senior member of our
-                            medical team will manually verify these details to ensure you get the maximum possible benefit.
-                        </p>
+                    <h2 className="text-4xl font-extrabold text-white mb-4 tracking-tight">Strategy Pending</h2>
+                    <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
+                        Our AI has flagged complexities in this claim. A senior medical analyst will perform a side-by-side audit to ensure maximum accuracy.
+                    </p>
 
-                        {!isSubmitted ? (
-                            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-left">
-                                <h4 className="font-semibold text-slate-800 mb-2">How should we reach you?</h4>
-                                <p className="text-sm text-slate-500 mb-6">Enter your contact details and we'll update you within 24 hours.</p>
+                    {!isSubmitted ? (
+                        <div className="bg-white/5 p-8 rounded-[2rem] border border-white/5 text-left space-y-6">
+                            <div>
+                                <h4 className="font-bold text-white mb-1">Deployment Notification</h4>
+                                <p className="text-xs text-muted-foreground">Enter your secure handle for status updates.</p>
+                            </div>
 
-                                <div className="space-y-4">
-                                    <div className="relative">
-                                        <Mail className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
-                                        <Input
-                                            placeholder="Email or Phone Number"
-                                            className="pl-11 h-12 text-lg"
-                                            value={contactInfo}
-                                            onChange={(e) => setContactInfo(e.target.value)}
-                                        />
-                                    </div>
-                                    <Button
-                                        onClick={() => setIsSubmitted(true)}
-                                        disabled={!contactInfo}
-                                        className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-lg group"
-                                    >
-                                        Request Follow-up
-                                        <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                    </Button>
+                            <div className="space-y-4">
+                                <div className="relative group">
+                                    <Mail className="absolute left-4 top-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                                    <Input
+                                        placeholder="Email or Encrypted ID"
+                                        className="pl-12 h-14 bg-white/5 border-white/10 rounded-xl text-lg text-white placeholder:text-muted-foreground/30 focus:ring-primary/50"
+                                        value={contactInfo}
+                                        onChange={(e) => setContactInfo(e.target.value)}
+                                    />
                                 </div>
+                                <Button
+                                    onClick={() => setIsSubmitted(true)}
+                                    disabled={!contactInfo}
+                                    className="w-full h-14 premium-gradient rounded-xl text-lg font-black uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]"
+                                >
+                                    Activate Alert
+                                    <Send className="ml-3 w-5 h-5" />
+                                </Button>
                             </div>
-                        ) : (
-                            <div className="animate-in fade-in zoom-in duration-500 bg-green-50 p-8 rounded-2xl border border-green-100">
-                                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
-                                <h4 className="text-xl font-bold text-green-900 mb-2">Thank you!</h4>
-                                <p className="text-green-700">We've saved your info. Claim reference: <strong>{data.claim_id}</strong></p>
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
+                        </div>
+                    ) : (
+                        <div className="animate-in fade-in zoom-in duration-500 bg-primary/10 p-10 rounded-[2rem] border border-primary/20">
+                            <CheckCircle className="w-16 h-16 text-primary mx-auto mb-6" />
+                            <h4 className="text-2xl font-black text-white mb-2 uppercase tracking-tighter">Verified</h4>
+                            <p className="text-muted-foreground">Protocol ID: <span className="text-white font-mono">{data.claim_id}</span></p>
+                        </div>
+                    )}
+                </div>
             </motion.div>
         )
     }
@@ -103,130 +124,174 @@ export function AdjudicationResult({ data }: ResultProps) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-4xl mx-auto space-y-6"
+            className="w-full max-w-5xl mx-auto space-y-8 pb-20"
         >
-            {/* Hero Decision Card */}
-            <Card className="overflow-hidden border-t-8 relative" style={{
-                borderColor: data.verdict === 'APPROVED' ? '#22c55e' : data.verdict === 'REJECTED' ? '#ef4444' : '#eab308'
-            }}>
-                <div className="absolute top-4 right-4 z-10">
-                    <Button variant="outline" size="sm" onClick={handleDownload} className="shadow-sm">
-                        Download PDF
+            {/* Verdict Hero Card */}
+            <div className={cn(
+                "glass-card rounded-[3rem] overflow-hidden border-t-[12px] relative transition-all duration-700",
+                theme.border,
+                theme.glow
+            )}>
+                <div className="absolute top-8 right-8 z-10">
+                    <Button
+                        variant="outline"
+                        onClick={handleDownload}
+                        className="bg-white/5 border-white/10 hover:bg-white/10 rounded-xl h-12 px-6 font-bold text-white shadow-xl backdrop-blur-md"
+                    >
+                        <Download className="w-4 h-4 mr-2" /> Settlement PDF
                     </Button>
                 </div>
-                <CardContent className="pt-8 text-center bg-gradient-to-b from-white to-gray-50/50">
-                    <div className="flex flex-col items-center">
-                        {getIcon(data.verdict)}
-                        <Badge className={cn("text-lg px-4 py-1 mb-2", getStatusColor(data.verdict))}>
-                            {data.verdict.replace('_', ' ')}
-                        </Badge>
-                        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-                            ₹ {data.approved_amount.toLocaleString()}
-                        </h2>
-                        <p className="text-muted-foreground mt-1">Approved Amount</p>
 
-                        <div className="mt-4 flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full border border-slate-200">
-                            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">AI Confidence</span>
-                            <div className="w-24 h-2 bg-slate-200 rounded-full overflow-hidden">
-                                <div
-                                    className={cn(
-                                        "h-full transition-all duration-1000",
-                                        data.confidence_score > 0.8 ? "bg-green-500" : data.confidence_score > 0.5 ? "bg-amber-500" : "bg-red-500"
-                                    )}
-                                    style={{ width: `${data.confidence_score * 100}%` }}
-                                />
+                <div className="p-12 md:p-16 text-center space-y-8 bg-gradient-to-b from-white/5 to-transparent">
+                    <div className="flex flex-col items-center">
+                        <div className="mb-8 p-6 bg-white/5 rounded-[2.5rem] border border-white/5 shadow-inner">
+                            {theme.icon}
+                        </div>
+
+                        <div className={cn("px-6 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.3em] mb-4 shadow-sm border", theme.bg, theme.color, theme.border)}>
+                            {data.verdict.replace('_', ' ')}
+                        </div>
+
+                        <div className="space-y-1">
+                            <h2 className="text-6xl font-black tracking-tighter text-white">
+                                ₹{data.approved_amount.toLocaleString()}
+                            </h2>
+                            <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">Certified Settlement Amount</p>
+                        </div>
+
+                        {/* Confidence Meter */}
+                        <div className="mt-10 flex flex-col items-center gap-3">
+                            <div className="flex items-center gap-2">
+                                <ShieldCheck className="w-4 h-4 text-primary" />
+                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">AI Audit Confidence</span>
                             </div>
-                            <span className="text-xs font-bold text-slate-700">{Math.round(data.confidence_score * 100)}%</span>
+                            <div className="flex items-center gap-4">
+                                <div className="w-48 h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${data.confidence_score * 100}%` }}
+                                        transition={{ duration: 1.5, ease: "easeOut" }}
+                                        className={cn(
+                                            "h-full rounded-full shadow-[0_0_10px_rgba(var(--primary),0.5)]",
+                                            data.confidence_score > 0.8 ? "bg-emerald-500" : data.confidence_score > 0.5 ? "bg-amber-500" : "bg-rose-500"
+                                        )}
+                                    />
+                                </div>
+                                <span className="text-sm font-black text-white">{Math.round(data.confidence_score * 100)}%</span>
+                            </div>
                         </div>
 
                         {(data.next_steps || data.notes) && (
-                            <div className="mt-6 p-4 bg-muted/50 rounded-lg max-w-lg w-full text-left text-sm">
-                                {data.notes && <p className="font-semibold text-gray-700">{data.notes}</p>}
-                                {data.next_steps && <p className="text-gray-500 mt-1">{data.next_steps}</p>}
+                            <div className="mt-12 glass-card border-white/5 p-6 rounded-2xl max-w-xl w-full text-left bg-white/[0.02]">
+                                {data.notes && <p className="text-sm font-bold text-white mb-1">Note: {data.notes}</p>}
+                                {data.next_steps && <p className="text-xs text-muted-foreground leading-relaxed italic">"{data.next_steps}"</p>}
                             </div>
                         )}
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
-            {/* Financial Breakdown */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Financial Summary</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                        <div className="flex justify-between font-medium">
-                            <span>Total Claimed</span>
-                            <span>₹ {data.claimed_amount.toLocaleString()}</span>
+            {/* Detailed Breakdown Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                {/* Financial Ledger */}
+                <div className="glass-card p-10 rounded-[2.5rem] space-y-8">
+                    <div className="flex items-center gap-3 mb-2">
+                        <BarChart3 className="text-primary w-6 h-6" />
+                        <h3 className="text-xl font-bold text-white uppercase tracking-tight">Settlement Ledger</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center py-4 border-b border-white/5">
+                            <span className="text-sm font-semibold text-muted-foreground font-mono">GROSS_CLAIM</span>
+                            <span className="text-xl font-bold text-white">₹{data.claimed_amount.toLocaleString()}</span>
                         </div>
 
                         {data.deductions.length > 0 && (
-                            <div className="border-t pt-3 space-y-2">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase">Deductions</p>
+                            <div className="py-2 space-y-4">
                                 {data.deductions.map((d, i) => (
-                                    <div key={i} className="flex justify-between text-sm text-red-600">
-                                        <span>- {d.reason}</span>
-                                        <span>₹ {d.amount.toLocaleString()}</span>
+                                    <div key={i} className="flex justify-between items-start group">
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] font-black text-rose-500/80 uppercase tracking-tighter">Adjustment</span>
+                                            <span className="text-sm font-medium text-muted-foreground group-hover:text-rose-400 transition-colors uppercase">{d.reason}</span>
+                                        </div>
+                                        <span className="text-sm font-bold text-rose-500">-₹{d.amount.toLocaleString()}</span>
                                     </div>
                                 ))}
                             </div>
                         )}
 
-                        <div className="flex justify-between font-bold text-lg border-t pt-3">
-                            <span>Net Approved</span>
-                            <span className="text-green-600">₹ {data.approved_amount.toLocaleString()}</span>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Rejection Reasons & Trace */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Decision Logic</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {data.rejection_reasons.length > 0 ? (
-                            <div className="space-y-2">
-                                <p className="text-xs font-semibold text-red-800 uppercase">Rejection Reasons</p>
-                                <ul className="list-disc pl-4 space-y-1">
-                                    {data.rejection_reasons.map((r, i) => (
-                                        <li key={i} className="text-sm text-red-600">{r}</li>
-                                    ))}
-                                </ul>
+                        <div className="flex justify-between items-center py-6 border-t-[3px] border-white/5 mt-4">
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Final Outcome</span>
+                                <span className="text-2xl font-black text-white">NET_APPROVED</span>
                             </div>
-                        ) : (
-                            <p className="text-sm text-green-600 flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4" /> No rejection reasons implementation.
-                            </p>
-                        )}
+                            <span className="text-4xl font-black text-emerald-400">₹{data.approved_amount.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
 
-                        <div className="mt-6 border-t pt-4">
-                            <button
-                                onClick={() => setShowTrace(!showTrace)}
-                                className="flex items-center justify-between w-full text-sm font-medium text-gray-500 hover:text-gray-900"
-                            >
-                                <span>Full Decision Trace</span>
-                                {showTrace ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                            </button>
+                {/* Audit Trace & Decisions */}
+                <div className="glass-card p-10 rounded-[2.5rem] flex flex-col">
+                    <div className="flex items-center gap-3 mb-8">
+                        <FileText className="text-primary w-6 h-6" />
+                        <h3 className="text-xl font-bold text-white uppercase tracking-tight">Adjudication Protocol</h3>
+                    </div>
 
-                            {showTrace && (
-                                <div className="mt-3 space-y-2 max-h-48 overflow-y-auto">
-                                    {data.decision_trace.map((step, i) => (
-                                        <div key={i} className="flex items-start gap-2 text-xs">
-                                            <div className={cn("w-2 h-2 mt-1 rounded-full flex-shrink-0", step.status === 'PASS' ? 'bg-green-500' : 'bg-red-500', step.status === 'FLAG' && 'bg-yellow-500')} />
-                                            <div>
-                                                <span className="font-semibold">{step.step}:</span> <span className="text-gray-600">{step.reason}</span>
-                                            </div>
+                    <div className="flex-1 space-y-6">
+                        {data.rejection_reasons.length > 0 ? (
+                            <div className="space-y-3">
+                                <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Protocol Failures</p>
+                                <div className="space-y-3">
+                                    {data.rejection_reasons.map((r, i) => (
+                                        <div key={i} className="flex items-center gap-3 p-4 bg-rose-500/5 border border-rose-500/10 rounded-2xl">
+                                            <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                                            <span className="text-sm font-bold text-rose-500 italic">{r}</span>
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+                        ) : (
+                            <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl flex items-center gap-3 font-bold text-emerald-400 text-sm">
+                                <ShieldCheck className="w-5 h-5" />
+                                All Protocol Rules Satisfied
+                            </div>
+                        )}
+
+                        <div className="space-y-4 pt-4 border-t border-white/5">
+                            <button
+                                onClick={() => setShowTrace(!showTrace)}
+                                className="flex items-center justify-between w-full h-14 px-6 bg-white/5 rounded-2xl border border-white/5 text-sm font-bold text-white hover:bg-white/10 transition-all"
+                            >
+                                <span className="uppercase tracking-widest">Full Execution Log</span>
+                                {showTrace ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                            </button>
+
+                            {showTrace && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    className="space-y-3 overflow-hidden"
+                                >
+                                    {data.decision_trace.map((step, i) => (
+                                        <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                                            <div className={cn(
+                                                "w-2.5 h-2.5 mt-1.5 rounded-full shrink-0 shadow-sm",
+                                                step.status === 'PASS' ? 'bg-emerald-500 shadow-emerald-500/50' : step.status === 'FLAG' ? 'bg-amber-500 shadow-amber-500/50' : 'bg-rose-500 shadow-rose-500/50'
+                                            )} />
+                                            <div className="space-y-1">
+                                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-tighter">{step.step}</p>
+                                                <p className="text-sm font-medium text-white/80 leading-relaxed uppercase">{step.note || step.reason}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </motion.div>
                             )}
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
             </div>
         </motion.div>
     )

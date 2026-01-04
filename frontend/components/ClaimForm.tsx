@@ -1,9 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Upload, FileText, X, AlertCircle, Loader2 } from "lucide-react"
+import { Upload, FileText, X, AlertCircle, Loader2, ShieldCheck, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { submitClaim, AdjudicationResponse } from "@/lib/api"
 import { cn } from "@/lib/utils"
 
@@ -41,8 +40,6 @@ export function ClaimForm({ onSuccess }: ClaimFormProps) {
         try {
             const formData = new FormData()
             formData.append("files", file)
-            // Inputs removed as per request. Backend defaults Member ID and extracts Amount.
-
             const result = await submitClaim(formData)
             onSuccess(result)
         } catch (err: any) {
@@ -53,79 +50,130 @@ export function ClaimForm({ onSuccess }: ClaimFormProps) {
     }
 
     return (
-        <div className="w-full max-w-2xl mx-auto">
-            <Card className="border-dashed border-2 bg-slate-50/50">
-                <CardContent className="p-10 text-center">
+        <div className="w-full max-w-2xl mx-auto space-y-8 animate-slide-up">
 
-                    {!file ? (
-                        <div
-                            onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-                            onDragLeave={() => setIsDragOver(false)}
-                            onDrop={handleDrop}
-                            className={cn(
-                                "flex flex-col items-center justify-center space-y-4 cursor-pointer transition-all duration-200",
-                                isDragOver ? "scale-105" : ""
-                            )}
-                        >
-                            <div className="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                                <Upload className="w-10 h-10 text-indigo-600" />
-                            </div>
-                            <h3 className="text-xl font-semibold text-slate-800">
-                                Drag & Drop your invoice here
+            <div className="text-center space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
+                    <Zap className="w-3 h-3 fill-current" />
+                    AI Core v3.0
+                </div>
+                <h2 className="text-3xl font-black text-white tracking-tight">Claim Intake Portal</h2>
+                <p className="text-muted-foreground text-sm">Upload medical invoices for instant AI adjudication.</p>
+            </div>
+
+            <div className={cn(
+                "glass-card rounded-[2.5rem] p-12 text-center transition-all duration-500 border-2",
+                isDragOver ? "border-primary bg-primary/10 scale-[1.02]" : "border-white/5 bg-white/5",
+                isLoading ? "opacity-50 pointer-events-none" : ""
+            )}>
+
+                {!file ? (
+                    <div
+                        onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+                        onDragLeave={() => setIsDragOver(false)}
+                        onDrop={handleDrop}
+                        className="flex flex-col items-center justify-center space-y-6"
+                    >
+                        <div className="w-24 h-24 premium-gradient rounded-[2rem] flex items-center justify-center shadow-2xl shadow-primary/40 group-hover:scale-110 transition-transform duration-500">
+                            <Upload className="w-10 h-10 text-white animate-bounce-slow" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white">
+                                Drop document here
                             </h3>
-                            <p className="text-slate-500 max-w-xs">
-                                Supports PDF, PNG, JPG, or TXT formats.
-                                AI will extract details automatically.
+                            <p className="text-muted-foreground text-sm max-w-xs mx-auto">
+                                We accept PDF, PNG, JPG, or TXT. AI automatically extracts every line item.
                             </p>
+                        </div>
 
-                            <div className="relative mt-6">
-                                <input
-                                    type="file"
-                                    id="file-upload"
-                                    className="hidden"
-                                    onChange={handleFileChange}
-                                    accept=".txt,.pdf,.jpg,.jpeg,.png"
-                                />
-                                <Button variant="outline" size="lg" onClick={() => document.getElementById('file-upload')?.click()}>
-                                    Browse Files
-                                </Button>
+                        <div className="flex flex-col items-center gap-4 w-full">
+                            <div className="h-px w-32 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+                            <input
+                                type="file"
+                                id="file-upload"
+                                className="hidden"
+                                onChange={handleFileChange}
+                                accept=".txt,.pdf,.jpg,.jpeg,.png"
+                            />
+                            <Button
+                                variant="outline"
+                                className="bg-white/5 border-white/10 hover:bg-white/10 rounded-xl h-12 px-8 font-bold text-white transition-all"
+                                onClick={() => document.getElementById('file-upload')?.click()}
+                            >
+                                Browse Filesystem
+                            </Button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center gap-8 animate-in zoom-in duration-500">
+                        <div className="relative">
+                            <div className="w-24 h-24 bg-primary/20 rounded-[2rem] flex items-center justify-center border border-primary/30 ring-4 ring-primary/10">
+                                <FileText className="w-10 h-10 text-primary" />
+                            </div>
+                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg border-4 border-slate-950">
+                                <ShieldCheck className="w-4 h-4 text-white" />
                             </div>
                         </div>
-                    ) : (
-                        <div className="flex flex-col items-center animate-in fade-in zoom-in duration-300">
-                            <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-4">
-                                <FileText className="w-8 h-8 text-green-600" />
-                            </div>
-                            <h3 className="text-lg font-medium text-slate-900">{file.name}</h3>
-                            <p className="text-sm text-slate-500 mb-6">{(file.size / 1024).toFixed(1)} KB</p>
 
-                            <div className="flex gap-3">
-                                <Button variant="outline" onClick={() => setFile(null)} disabled={isLoading}>
-                                    <X className="w-4 h-4 mr-2" /> Change File
-                                </Button>
-                                <Button size="lg" onClick={handleSubmit} disabled={isLoading} className="min-w-[150px]">
-                                    {isLoading ? (
-                                        <>
-                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                            Analyzing...
-                                        </>
-                                    ) : (
-                                        "Process Claim"
-                                    )}
-                                </Button>
-                            </div>
+                        <div className="space-y-1">
+                            <h3 className="text-xl font-bold text-white truncate max-w-[300px]">{file.name}</h3>
+                            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                                Ready for processing • {(file.size / 1024).toFixed(1)} KB
+                            </p>
                         </div>
-                    )}
 
-                    {error && (
-                        <div className="mt-6 p-3 bg-red-50 text-red-600 rounded-md text-sm flex items-center justify-center gap-2">
-                            <AlertCircle className="w-4 h-4" />
-                            {error}
+                        <div className="flex flex-col sm:flex-row gap-3 w-full">
+                            <Button
+                                variant="outline"
+                                onClick={() => setFile(null)}
+                                disabled={isLoading}
+                                className="flex-1 h-14 bg-white/5 border-white/10 text-white rounded-2xl font-bold hover:bg-white/10"
+                            >
+                                <X className="w-4 h-4 mr-2" /> Discard
+                            </Button>
+                            <Button
+                                size="lg"
+                                onClick={handleSubmit}
+                                disabled={isLoading}
+                                className="flex-2 h-14 premium-gradient text-white rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-primary/30 min-w-[200px]"
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-3 animate-spin" />
+                                        Analyzing...
+                                    </>
+                                ) : (
+                                    "Launch AI Scan"
+                                )}
+                            </Button>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                </CardContent>
-            </Card>
+                {error && (
+                    <div className="mt-8 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl text-xs font-bold flex items-center justify-center gap-3 animate-pulse">
+                        <AlertCircle className="w-4 h-4" />
+                        {error}
+                    </div>
+                )}
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+                <FeatureSmall icon={<Zap className="w-3 h-3" />} text="Instant OCR" />
+                <FeatureSmall icon={<ShieldCheck className="w-3 h-3" />} text="Fraud Logic" />
+                <FeatureSmall icon={<FileText className="w-3 h-3" />} text="Compliance" />
+            </div>
+        </div>
+    )
+}
+
+function FeatureSmall({ icon, text }: { icon: React.ReactNode, text: string }) {
+    return (
+        <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground bg-white/5 border border-white/5 rounded-xl px-3 py-2 justify-center">
+            <span className="text-primary">{icon}</span>
+            <span className="uppercase tracking-tighter">{text}</span>
         </div>
     )
 }

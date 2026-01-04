@@ -15,6 +15,8 @@ from fastapi.responses import FileResponse
 
 router = APIRouter()
 print("\n[BACKEND] Routes reloaded. Checking API key...")
+# Force reload to pick up updated policy_terms.json
+
 
 # Global Services Setup (Simulated Singleton)
 # In production, use Dependency Injection (Depends)

@@ -1,0 +1,65 @@
+--------------------------------
+Wellness Clinic
+45 Beauty Street, Mumbai
+GST No: 27XYZAB4567G2Z8
+--------------------------------
+Bill No: WLC20260104002        Date: 04/01/2026
+
+Patient Details:
+Name: Anita Desai
+Contact: 8765432109
+Ref. By: Dr. Cosmetic
+
+PARTICULARS               AMOUNT
+--------------------------------
+Cosmetic Procedure:
+- Liposuction            ₹ 15000
+- Botox Treatment        ₹ 12000
+Follow-up Care           ₹ 3000
+--------------------------------
+Sub Total:               ₹ 30000
+GST (18%):              ₹ 5400
+--------------------------------
+TOTAL:                   ₹ 35400
+Amount in Words: Thirty Five Thousand Four Hundred Only
+
+Payment Mode: Card
+Transaction ID: TXN20260104002
+
+[Authorized Signatory]
+[Stamp]
+--------------------------------
+
+Prescription:
+--------------------------------
+[Logo]
+Dr. Cosmetic, MD Plastic Surgery
+Reg. No: [NOT PROVIDED]
+Wellness Clinic, Mumbai
+Phone: 022-98765432
+--------------------------------
+Date: 04/01/2026
+
+Patient Name: Anita Desai
+Age/Sex: 32/Female
+Address: 18, Bandra West, Mumbai
+
+Chief Complaints:
+- Want to reduce weight
+- Improve appearance
+
+Diagnosis:
+Cosmetic concerns
+
+Rx (Prescription):
+1. Liposuction procedure
+2. Botox injection sessions
+
+Investigations Advised:
+- None
+
+Follow-up: 14/01/2026
+
+[Doctor's Signature]
+[Doctor's Stamp]
+--------------------------------

@@ -2,103 +2,201 @@
 
 import React from "react"
 import Link from "next/link"
-import { ArrowRight, Bot, ShieldCheck, Zap, BarChart3, Clock, CheckCircle2 } from "lucide-react"
+import { ArrowRight, Bot, ShieldCheck, Zap, BarChart3, Clock, CheckCircle2, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
+import { cn } from "@/lib/utils"
 
 export default function LandingPage() {
     const { role } = useAuth()
 
     return (
-        <div className="min-h-screen bg-white selection:bg-indigo-100 italic font-sans antialiased text-slate-900">
+        <div className="min-h-screen bg-[#020617] selection:bg-primary/30 selection:text-white font-sans antialiased text-slate-200 overflow-hidden">
+
+            {/* Ambient Background Elements */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1000px] pointer-events-none">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full"></div>
+                <div className="absolute top-[10%] right-[-10%] w-[30%] h-[30%] bg-emerald-500/10 blur-[120px] rounded-full"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-white/10 to-transparent"></div>
+            </div>
+
             {/* Nav */}
-            <nav className="border-b border-slate-100 bg-white/70 backdrop-blur-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center transform rotate-3 shadow-lg shadow-indigo-200">
-                            <Bot className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-600">
-                            Plum Adjudicator
-                        </span>
+            <nav className="h-24 flex items-center justify-between px-8 md:px-16 border-b border-white/5 bg-background/40 backdrop-blur-xl sticky top-0 z-50">
+                <div className="flex items-center gap-4 group cursor-pointer">
+                    <div className="w-12 h-12 premium-gradient rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-primary/20">
+                        <Bot className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="font-black text-2xl tracking-tighter text-white uppercase italic">Plum AI</span>
+                        <span className="text-[10px] font-black text-primary tracking-[0.3em] uppercase">Adjudicator</span>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-8">
+                    <div className="hidden md:flex items-center gap-8 text-sm font-bold text-muted-foreground uppercase tracking-widest">
+                        <a href="#" className="hover:text-white transition-colors">Protocol</a>
+                        <a href="#" className="hover:text-white transition-colors">Compliance</a>
+                        <a href="#" className="hover:text-white transition-colors">Network</a>
                     </div>
                     <Link href={role ? (role === 'admin' ? '/dashboard' : '/claims/new') : "/login"}>
-                        <Button className="bg-indigo-600 hover:bg-indigo-700 hover:scale-105 transition-all rounded-full h-11 px-8 shadow-md">
-                            {role ? "Go to App" : "Try demo"}
+                        <Button className="premium-gradient hover:scale-105 transition-all text-white rounded-xl h-12 px-8 font-black uppercase tracking-widest shadow-xl shadow-primary/20">
+                            {role ? "Open Workspace" : "Access Demo"}
                         </Button>
                     </Link>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <header className="relative overflow-hidden pt-24 pb-32">
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
-
-                <div className="max-w-7xl mx-auto px-4 relative">
-                    <div className="max-w-4xl">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
-                            <Zap className="w-4 h-4 text-indigo-600 fill-indigo-600" />
-                            <span className="text-sm font-semibold text-indigo-700">Introducing ClaimSense AI v2.0</span>
+            <header className="relative pt-32 pb-48 px-8">
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 items-center gap-20">
+                    <div className="space-y-10">
+                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full animate-in fade-in slide-in-from-top-4 duration-1000">
+                            <Zap className="w-4 h-4 text-primary fill-primary" />
+                            <span className="text-xs font-black text-white uppercase tracking-widest">Deploying Neural Core v4.0</span>
+                            <ChevronRight className="w-3 h-3 text-white/30" />
                         </div>
 
-                        <h1 className="text-6xl md:text-7xl font-extrabold text-slate-900 leading-[1.05] tracking-tight mb-8">
-                            Adjudicate health claims in <span className="italic font-serif text-indigo-600 underline decoration-indigo-200/50 underline-offset-8">seconds</span>, not days.
+                        <h1 className="text-7xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+                            Adjudicate <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-400 to-emerald-400">Instantly.</span>
                         </h1>
 
-                        <p className="text-xl text-slate-600 leading-relaxed mb-10 max-w-2xl">
-                            Our AI-first platform extracts medical data from messy files, enforces 2026 OPD policy rules instantly,
-                            and flags high-risk claims for human review before you can even refresh the page.
+                        <p className="text-xl text-muted-foreground leading-relaxed max-w-xl font-medium">
+                            The ultimate AI-first platform for modern insurers. We extract medical data from any document, enforce complex 2026 OPD policies, and process settlements in <span className="text-white">under 400ms</span>.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <Link href="/login">
-                                <Button size="lg" className="h-16 px-10 rounded-full bg-slate-900 hover:bg-slate-800 text-lg group w-full sm:w-auto">
-                                    Try it out
-                                    <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        <div className="flex flex-col sm:flex-row gap-6">
+                            <Link href="/login" className="flex-1 sm:flex-none">
+                                <Button size="lg" className="h-16 px-12 rounded-2xl premium-gradient text-white text-lg font-black uppercase tracking-widest shadow-2xl shadow-primary/40 group w-full">
+                                    Start Adjudicating
+                                    <ArrowRight className="ml-4 w-6 h-6 group-hover:translate-x-2 transition-transform" />
                                 </Button>
                             </Link>
+                            <Button size="lg" variant="outline" className="h-16 px-10 rounded-2xl bg-white/5 border-white/10 text-white text-lg font-bold hover:bg-white/10 group">
+                                Watch Intelligence Demo
+                            </Button>
+                        </div>
+
+                        <div className="flex items-center gap-8 pt-4">
+                            <div className="flex -space-x-3">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div key={i} className="w-10 h-10 rounded-full bg-slate-800 border-2 border-[#020617] flex items-center justify-center overflow-hidden">
+                                        <div className="w-full h-full bg-gradient-to-br from-white/10 to-white/5"></div>
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-sm font-bold text-muted-foreground">
+                                <span className="text-white">500+</span> Claims processed this hour
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Floating Tech Stat Card */}
+                    <div className="hidden lg:block relative">
+                        <div className="glass-card rounded-[3rem] p-12 aspect-square flex flex-col justify-between border-white/[0.08] relative group">
+                            <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full group-hover:bg-primary/10 transition-all duration-700"></div>
+
+                            <div className="relative z-10 flex justify-between items-start">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Network Pulse</p>
+                                    <h3 className="text-3xl font-black text-white italic">OPERATIONAL</h3>
+                                </div>
+                                <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 animate-pulse">
+                                    <Activity className="text-emerald-400 w-6 h-6" />
+                                </div>
+                            </div>
+
+                            <div className="relative z-10 space-y-4">
+                                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="h-full w-[88%] bg-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]"></div>
+                                </div>
+                                <div className="flex justify-between text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                                    <span>AI CONFIDENCE</span>
+                                    <span className="text-white">88.4%</span>
+                                </div>
+                            </div>
+
+                            <div className="relative z-10 grid grid-cols-2 gap-4">
+                                <div className="p-6 bg-white/5 border border-white/5 rounded-3xl">
+                                    <p className="text-4xl font-black text-white italic tracking-tighter">0.4s</p>
+                                    <p className="text-[10px] font-bold text-muted-foreground uppercase mt-2">AVG LATENCY</p>
+                                </div>
+                                <div className="p-6 bg-white/5 border border-white/5 rounded-3xl">
+                                    <p className="text-4xl font-black text-emerald-400 italic tracking-tighter">100%</p>
+                                    <p className="text-[10px] font-bold text-muted-foreground uppercase mt-2">COMPLIANCE</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </header>
 
-            {/* Feature Grid */}
-            <section className="py-24 bg-slate-50 border-y border-slate-100">
-                <div className="max-w-7xl mx-auto px-4 text-center mb-16">
-                    <h2 className="text-4xl font-bold text-slate-900">Engineered for Accuracy</h2>
-                    <p className="text-slate-500 mt-4 text-lg">Four layers of validation protecting your loss ratio</p>
-                </div>
+            {/* Feature Section */}
+            <section className="py-32 px-8 relative">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center space-y-4 mb-24">
+                        <h2 className="text-sm font-black text-primary uppercase tracking-[0.4em]">Integrated Intelligence</h2>
+                        <p className="text-5xl font-black text-white tracking-tighter">Engineered for the 1%.</p>
+                    </div>
 
-                <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {[
-                        { icon: Bot, title: "Llama 3 Extraction", desc: "No manual data entry. Our engine reads PDFs, handwritten bills, and digital receipts.", color: "bg-blue-50 text-blue-600" },
-                        { icon: ShieldCheck, title: "Rule Enforcement", desc: "Instantly validates claims against 2026 policy terms like OPD sub-limits and copays.", color: "bg-green-50 text-green-600" },
-                        { icon: Clock, title: "0ms Latency", desc: "Real-time decision making allows you to pay claims while the customer is still at the hospital.", color: "bg-indigo-50 text-indigo-600" },
-                        { icon: CheckCircle2, title: "Risk Scoring", desc: "Claims are assigned a confidence score. Low confidence results trigger manual team review.", color: "bg-orange-50 text-orange-600" }
-                    ].map((f, i) => (
-                        <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300">
-                            <div className={`${f.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-6`}>
-                                <f.icon className="w-8 h-8" />
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {[
+                            { icon: Bot, title: "Neural Extraction", desc: "No manual data entry. Our engine deciphers messy PDFs and digital receipts instantly.", color: "text-blue-400", bg: "bg-blue-500/10" },
+                            { icon: ShieldCheck, title: "Policy Integrity", desc: "Hard-coded enforcement of 2026 OPD limits, copays, and eligibility gates.", color: "text-emerald-400", bg: "bg-emerald-500/10" },
+                            { icon: BarChart3, title: "Predictive Analytics", desc: "Real-time impact analysis and backtesting against historical claim datasets.", color: "text-primary", bg: "bg-primary/10" },
+                            { icon: Clock, title: "Hyper-Speed", desc: "Zero-latency adjudication enables instant disbursement on the hospital floor.", color: "text-amber-400", bg: "bg-amber-500/10" }
+                        ].map((f, i) => (
+                            <div key={i} className="glass-card p-10 rounded-[2.5rem] border-white/[0.05] hover:border-primary/50 transition-all duration-500 group">
+                                <div className={`${f.bg} w-16 h-16 rounded-[1.5rem] flex items-center justify-center mb-8 border border-white/5 group-hover:scale-110 transition-transform`}>
+                                    <f.icon className={cn("w-8 h-8", f.color)} />
+                                </div>
+                                <h3 className="text-xl font-bold mb-3 text-white uppercase tracking-tight">{f.title}</h3>
+                                <p className="text-muted-foreground leading-relaxed text-sm font-medium">{f.desc}</p>
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-slate-900">{f.title}</h3>
-                            <p className="text-slate-500 leading-relaxed">{f.desc}</p>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-12 bg-white">
-                <div className="max-w-7xl mx-auto px-4 border-t border-slate-50 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-slate-400 text-sm">© 2026 Plum Claim AI. Built for the modern insurer.</p>
-                    <div className="flex gap-8 text-sm font-medium text-slate-500">
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Documentation</a>
-                        <a href="#" className="hover:text-indigo-600 transition-colors">API Keys</a>
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Security</a>
+            <footer className="py-20 px-8 border-t border-white/5 bg-white/[0.01]">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+                    <div className="flex flex-col items-center md:items-start">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-8 h-8 premium-gradient rounded-xl flex items-center justify-center">
+                                <Bot className="w-5 h-5 text-white" />
+                            </div>
+                            <span className="font-black text-white uppercase italic tracking-tighter">Plum AI</span>
+                        </div>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">© 2026 Plum Claim Intelligence • Private Node</p>
+                    </div>
+
+                    <div className="flex gap-12 text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+                        <a href="#" className="hover:text-primary transition-colors">Documentation</a>
+                        <a href="#" className="hover:text-primary transition-colors">API Keys</a>
+                        <a href="#" className="hover:text-primary transition-colors">Security</a>
                     </div>
                 </div>
             </footer>
         </div>
+    )
+}
+
+function Activity(props: any) {
+    return (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
     )
 }

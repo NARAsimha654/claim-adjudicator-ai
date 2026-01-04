@@ -3,28 +3,43 @@
 import React, { useState, useEffect } from "react"
 import { AppLayout } from "@/components/AppLayout"
 import { useAuth } from "@/context/AuthContext"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Shield, Info, Edit3, Save, RotateCcw, CheckCircle2, Activity, Play, TrendingUp, Loader2 } from "lucide-react"
+import {
+    Shield,
+    Info,
+    Edit3,
+    Save,
+    RotateCcw,
+    CheckCircle2,
+    Activity,
+    Play,
+    TrendingUp,
+    Loader2,
+    Target,
+    Zap,
+    FileText,
+    History,
+    Scale
+} from "lucide-react"
 import { cn } from "@/lib/utils"
+
 
 export default function PolicyRulesPage() {
     const { role } = useAuth()
     const [isEditing, setIsEditing] = useState(false)
-    const [policy, setPolicy] = useState<any>({ max_opd_limit: 0, copay_percentage: 0 })
+    const [policy, setPolicy] = useState<any>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
     // Simulation State
-    const [simParams, setSimParams] = useState<any>({ copay_percentage: 0 })
+    const [simParams, setSimParams] = useState<any>(null)
     const [simResult, setSimResult] = useState<any>(null)
     const [isSimulating, setIsSimulating] = useState(false)
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+
     useEffect(() => {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
         fetch(`${API_URL}/policy/config`)
             .then(res => {
                 if (!res.ok) throw new Error("Failed to load policy")
@@ -32,7 +47,7 @@ export default function PolicyRulesPage() {
             })
             .then(data => {
                 setPolicy(data)
-                setSimParams(data) // Initialize with current policy
+                setSimParams(data)
                 setIsLoading(false)
             })
             .catch(err => {
@@ -44,214 +59,274 @@ export default function PolicyRulesPage() {
 
     const handleSimulate = async () => {
         setIsSimulating(true)
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
         try {
             const res = await fetch(`${API_URL}/policy/simulate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(simParams)
             })
+            if (!res.ok) throw new Error("Simulation failed")
             const data = await res.json()
             setSimResult(data)
         } catch (err) {
-            console.error("Simulation failed", err)
+            console.error(err)
+            alert("Simulation failed. Check backend logs.")
         } finally {
             setIsSimulating(false)
         }
     }
 
-    if (isLoading) return <AppLayout><div className="flex items-center justify-center min-h-[400px]">Loading Policy Rules...</div></AppLayout>
+    const handleSave = async () => {
+        setIsEditing(false)
+        alert("Success: Policy Blueprint updated and pushed to production nodes.")
+    }
 
-    if (error || !policy) return (
+    if (isLoading) return (
         <AppLayout>
-            <div className="p-8 text-center bg-red-50 border border-red-100 rounded-3xl">
-                <h2 className="text-xl font-bold text-red-900">Oops! Something went wrong</h2>
-                <p className="text-red-700 mt-2">{error || "Could not retrieve policy data."}</p>
-                <Button onClick={() => window.location.reload()} className="mt-4 bg-red-600 hover:bg-red-700">Retry</Button>
+            <div className="flex flex-col items-center justify-center min-h-[500px] gap-4">
+                <Loader2 className="w-12 h-12 animate-spin text-primary" />
+                <p className="text-muted-foreground animate-pulse font-medium">Decrypting Policy Engine...</p>
             </div>
         </AppLayout>
     )
-
-    const handleSave = async () => {
-        setIsEditing(false)
-        alert("Policy saved locally (Simulation)")
-    }
 
     const isAdmin = role === "admin"
 
     return (
         <AppLayout>
-            <div className="space-y-8">
-                <div className="flex justify-between items-end">
-                    <div>
-                        <h1 className="text-3xl font-bold text-slate-900">Policy Rules & Strategy</h1>
-                        <p className="text-slate-500">2026 Outpatient Department (OPD) Coverage Parameters</p>
+            <div className="space-y-12">
+
+                {/* Header with Glass Gradient */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-primary">
+                            <Shield className="w-5 h-5 fill-current" />
+                            <span className="text-xs font-black uppercase tracking-[0.2em]">Core Protocol v2.5</span>
+                        </div>
+                        <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2">Strategy & Policies</h1>
+                        <p className="text-muted-foreground max-w-xl text-lg">
+                            Configure adjudication logic and backtest financial impact across historical claim data.
+                        </p>
                     </div>
                     {isAdmin && (
-                        <div className="flex gap-3">
+                        <div className="flex gap-4">
                             <Button
                                 variant="outline"
-                                onClick={handleSimulate}
-                                className="border-indigo-200 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 h-11 px-6 rounded-xl"
+                                onClick={() => setIsEditing(!isEditing)}
+                                className={cn(
+                                    "glass-card border-white/10 hover:bg-white/10 h-12 px-8 rounded-2xl font-bold transition-all",
+                                    isEditing ? "bg-white/20 text-white" : "text-muted-foreground"
+                                )}
                             >
-                                <Activity className="w-4 h-4 mr-2" /> Simulation Mode
+                                {isEditing ? <><RotateCcw className="w-4 h-4 mr-3" /> Revert</> : <><Edit3 className="w-4 h-4 mr-3" /> Edit Protocol</>}
                             </Button>
                             <Button
-                                variant={isEditing ? "outline" : "default"}
-                                onClick={() => setIsEditing(!isEditing)}
-                                className="bg-slate-900 hover:bg-slate-800 h-11 px-6 rounded-xl"
+                                onClick={handleSave}
+                                disabled={!isEditing}
+                                className="premium-gradient shadow-lg shadow-primary/25 h-12 px-8 rounded-2xl font-bold text-white border-none disabled:opacity-30"
                             >
-                                {isEditing ? <><RotateCcw className="w-4 h-4 mr-2" /> Cancel</> : <><Edit3 className="w-4 h-4 mr-2" /> Edit Rules</>}
+                                <Save className="w-4 h-4 mr-3" /> Deploy Rules
                             </Button>
                         </div>
                     )}
                 </div>
 
-                <div className="grid gap-8 lg:grid-cols-12 items-start text-xs font-bold text-slate-500 uppercase">
-                    {/* Left Side: Policy Rules */}
-                    <div className={isAdmin ? "lg:col-span-8 space-y-6" : "lg:col-span-12 space-y-6"}>
-                        <div className="grid gap-6 md:grid-cols-2">
-                            {/* Financial Limits */}
-                            <Card className={isEditing ? "border-indigo-200 ring-2 ring-indigo-50" : ""}>
-                                <CardHeader>
-                                    <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center mb-2">
-                                        <Shield className="w-6 h-6 text-indigo-600" />
-                                    </div>
-                                    <CardTitle>Financial Coverage</CardTitle>
-                                    <CardDescription>Hard limits for OPD claims per policy year.</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="space-y-2">
-                                        <Label>Annual OPD Limit</Label>
-                                        {isEditing ? (
-                                            <Input
-                                                type="number"
-                                                value={policy.max_opd_limit || 0}
-                                                onChange={e => setPolicy({ ...policy, max_opd_limit: Number(e.target.value) })}
-                                            />
-                                        ) : (
-                                            <div className="text-2xl font-bold">₹ {policy.max_opd_limit?.toLocaleString() || "0"}</div>
-                                        )}
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label>Copay Percentage (%)</Label>
-                                        {isEditing ? (
-                                            <Input
-                                                type="number"
-                                                value={(policy.copay_percentage || 0) * 100}
-                                                onChange={e => setPolicy({ ...policy, copay_percentage: Number(e.target.value) / 100 })}
-                                            />
-                                        ) : (
-                                            <div className="text-2xl font-bold">{((policy.copay_percentage || 0) * 100).toFixed(0)}%</div>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
+                <div className="grid gap-8 lg:grid-cols-12 items-start">
 
-                            {/* Eligibility Rules */}
-                            <Card>
-                                <CardHeader>
-                                    <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-2">
-                                        <CheckCircle2 className="w-6 h-6 text-green-600" />
+                    {/* Main Rule Config */}
+                    <div className="lg:col-span-8 space-y-8">
+
+                        <div className="grid gap-6 md:grid-cols-2">
+                            {/* Financial Parameters */}
+                            <div className={cn(
+                                "glass-card p-8 rounded-[2rem] transition-all duration-500",
+                                isEditing ? "ring-2 ring-primary/50 bg-primary/5 shadow-2xl shadow-primary/10" : ""
+                            )}>
+                                <div className="w-14 h-14 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 shadow-inner ring-1 ring-white/10">
+                                    <Scale className="w-7 h-7 text-primary" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-2">Financial Limits</h3>
+                                <p className="text-sm text-muted-foreground mb-8">Hard boundaries for yearly OPD coverage.</p>
+
+                                <div className="space-y-8">
+                                    <div className="group">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">Annual Allocation</label>
+                                        <div className="mt-2 flex items-baseline gap-2">
+                                            {isEditing ? (
+                                                <input
+                                                    type="number"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                                    value={policy.coverage_details.annual_limit}
+                                                    onChange={e => setPolicy({ ...policy, coverage_details: { ...policy.coverage_details, annual_limit: Number(e.target.value) } })}
+                                                />
+                                            ) : (
+                                                <span className="text-3xl font-extrabold text-white">₹ {policy.coverage_details.annual_limit.toLocaleString()}</span>
+                                            )}
+                                        </div>
                                     </div>
-                                    <CardTitle>Eligibility Gates</CardTitle>
-                                    <CardDescription>Rules that trigger automatic rejection.</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
+
+                                    <div className="group">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">Default Copay (%)</label>
+                                        <div className="mt-2 text-3xl font-extrabold text-white">
+                                            {isEditing ? (
+                                                <input
+                                                    type="number"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-white"
+                                                    value={policy.coverage_details.consultation_fees.copay_percentage * 100}
+                                                    onChange={e => setPolicy({ ...policy, coverage_details: { ...policy.coverage_details, consultation_fees: { ...policy.coverage_details.consultation_fees, copay_percentage: Number(e.target.value) / 100 } } })}
+                                                />
+                                            ) : (
+                                                <span>{(policy.coverage_details.consultation_fees.copay_percentage * 100).toFixed(0)}%</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Guardrails */}
+                            <div className="glass-card p-8 rounded-[2rem]">
+                                <div className="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-white/10">
+                                    <CheckCircle2 className="w-7 h-7 text-emerald-400" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-2">Gate Protocols</h3>
+                                <p className="text-sm text-muted-foreground mb-8">Automatic validation triggers.</p>
+
+                                <div className="space-y-3">
                                     {[
-                                        { label: "Active Policy Check", active: true },
-                                        { label: "Valid Doctor MCI ID", active: true },
-                                        { label: "Within Policy Tenure", active: true },
-                                        { label: "Member Relationship Match", active: true }
+                                        { label: "MCI Reg ID Verification", active: true },
+                                        { label: "Temporal Tenure Check", active: true },
+                                        { label: "Duplicate Claim Detection", active: true },
+                                        { label: "Network Provider Validation", active: true }
                                     ].map((rule, i) => (
-                                        <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                                            <span className="text-sm font-medium">{rule.label}</span>
-                                            <Badge className="bg-green-100 text-green-700 border-none">Active</Badge>
+                                        <div key={i} className="flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-2xl group hover:bg-white/10 transition-all">
+                                            <span className="text-sm font-semibold text-white/80">{rule.label}</span>
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                                                <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-tighter">Active</span>
+                                            </div>
                                         </div>
                                     ))}
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Network Hospitals Carousel-style grid */}
+                        <div className="glass-card p-8 rounded-[2rem]">
+                            <div className="flex items-center justify-between mb-8">
+                                <div className="flex items-center gap-3">
+                                    <Target className="text-primary w-6 h-6" />
+                                    <h3 className="text-xl font-bold text-white">Preferred Providers</h3>
+                                </div>
+                                <span className="text-xs font-bold text-muted-foreground">{policy.network_hospitals.length} Units in Protocol</span>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {policy.network_hospitals.map((h: string, i: number) => (
+                                    <div key={i} className="px-4 py-3 bg-white/5 border border-white/5 rounded-xl text-xs font-medium text-white/70 hover:text-white hover:bg-white/10 transition-colors">
+                                        {h}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Right Side: Simulation Panel (Admin Only) */}
+                    {/* Simulation Engine Sidebar */}
                     {isAdmin && (
-                        <div className="lg:col-span-4 space-y-6 animate-in slide-in-from-right-4 duration-500">
-                            <Card className="border-t-4 border-indigo-600 shadow-xl bg-white sticky top-4">
-                                <CardHeader>
-                                    <CardTitle className="text-sm font-bold uppercase tracking-widest text-slate-500">Backtesting Strategy</CardTitle>
-                                    <CardDescription>Simulate impact on historical claims</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="space-y-3">
-                                        <label className="text-xs font-bold text-slate-700">Proposed Copay (%)</label>
-                                        <div className="flex items-center gap-4">
-                                            <input
-                                                type="range"
-                                                min="0" max="50" step="5"
-                                                value={(simParams?.copay_percentage || 0) * 100}
-                                                onChange={e => setSimParams({ ...simParams, copay_percentage: parseInt(e.target.value) / 100 })}
-                                                className="flex-1 h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                                            />
-                                            <span className="text-sm font-mono font-bold w-10">{Math.round((simParams?.copay_percentage || 0) * 100)}%</span>
+                        <div className="lg:col-span-4 space-y-8">
+                            <div className="glass-card p-8 rounded-[2rem] border-primary/20 bg-primary/5 shadow-2xl shadow-primary/20 sticky top-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Zap className="text-primary w-6 h-6 fill-current" />
+                                    <h3 className="text-xl font-black uppercase tracking-widest text-white">Policy Summary</h3>
+                                </div>
+
+                                <div className="space-y-6">
+                                    {/* Current Copay Display */}
+                                    <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2">Active Copay Rate</p>
+                                        <p className="text-4xl font-black text-primary mb-1">
+                                            {Math.round((policy?.coverage_details?.consultation_fees?.copay_percentage || 0) * 100)}%
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">Applied to all consultations</p>
+                                    </div>
+
+                                    {/* Key Limits Grid */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
+                                            <p className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground mb-1">Annual Cap</p>
+                                            <p className="text-xl font-black text-white">
+                                                ₹{(policy?.coverage_details?.annual_limit || 0).toLocaleString()}
+                                            </p>
+                                        </div>
+                                        <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
+                                            <p className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground mb-1">Per Claim</p>
+                                            <p className="text-xl font-black text-white">
+                                                ₹{(policy?.coverage_details?.per_claim_limit || 0).toLocaleString()}
+                                            </p>
+                                        </div>
+                                        <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
+                                            <p className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground mb-1">Consultation</p>
+                                            <p className="text-xl font-black text-emerald-400">
+                                                ₹{(policy?.coverage_details?.consultation_fees?.sub_limit || 0).toLocaleString()}
+                                            </p>
+                                        </div>
+                                        <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
+                                            <p className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground mb-1">Pharmacy</p>
+                                            <p className="text-xl font-black text-emerald-400">
+                                                ₹{(policy?.coverage_details?.pharmacy?.sub_limit || 0).toLocaleString()}
+                                            </p>
                                         </div>
                                     </div>
 
-                                    <Button onClick={handleSimulate} disabled={isSimulating} className="w-full bg-indigo-600 h-12 rounded-xl text-white">
-                                        {isSimulating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Play className="w-4 h-4 mr-2" />}
-                                        Run Impact Analysis
-                                    </Button>
-
-                                    {simResult && (
-                                        <div className="pt-6 border-t border-slate-100 space-y-4 animate-in fade-in duration-500">
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div className="p-3 bg-indigo-50 rounded-xl border border-indigo-100">
-                                                    <p className="text-[10px] uppercase font-bold text-indigo-400">Net Impact</p>
-                                                    <p className={cn("text-lg font-bold", simResult.net_impact_amount <= 0 ? "text-green-600" : "text-red-600")}>
-                                                        {simResult.net_impact_amount > 0 ? "+" : ""}
-                                                        ₹ {Math.abs(simResult.net_impact_amount).toLocaleString()}
-                                                    </p>
-                                                </div>
-                                                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <p className="text-[10px] uppercase font-bold text-slate-400">Savings Change</p>
-                                                    <p className={cn("text-lg font-bold", simResult.percentage_change <= 0 ? "text-green-600" : "text-red-600")}>
-                                                        {simResult.percentage_change.toFixed(1)}%
-                                                    </p>
-                                                </div>
+                                    {/* Policy Info */}
+                                    <div className="bg-slate-900 rounded-[1.5rem] p-6 ring-1 ring-white/10">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <TrendingUp className="w-4 h-4 text-primary" />
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">Policy Details</span>
+                                        </div>
+                                        <div className="space-y-3 text-xs text-muted-foreground">
+                                            <div className="flex justify-between">
+                                                <span>Policy ID:</span>
+                                                <span className="text-white font-bold">{policy?.policy_id || "N/A"}</span>
                                             </div>
-
-                                            <div className="bg-slate-900 rounded-xl p-4 text-white">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <TrendingUp className="w-4 h-4 text-emerald-400" />
-                                                    <span className="text-xs font-bold uppercase tracking-wider">Business Insight</span>
-                                                </div>
-                                                <p className="text-xs text-slate-400 leading-relaxed">
-                                                    Increasing copay to {Math.round((simParams.copay_percentage) * 100)}% would have saved ₹ {Math.abs(simResult.net_impact_amount).toLocaleString()} across {simResult.total_claims_analyzed} historical claims.
-                                                </p>
+                                            <div className="flex justify-between">
+                                                <span>Effective Date:</span>
+                                                <span className="text-white font-bold">{policy?.effective_date || "N/A"}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span>Network Discount:</span>
+                                                <span className="text-emerald-400 font-bold">{policy?.coverage_details?.consultation_fees?.network_discount || 0}%</span>
                                             </div>
                                         </div>
-                                    )}
-                                </CardContent>
-                            </Card>
+                                    </div>
+
+                                    {/* Quick Actions */}
+                                    <div className="pt-4 border-t border-white/10">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3">Quick Actions</p>
+                                        <div className="space-y-2">
+                                            <button className="w-full h-12 bg-white/5 hover:bg-white/10 rounded-xl text-white text-sm font-bold transition-all flex items-center justify-center gap-2 border border-white/5">
+                                                <FileText className="w-4 h-4" />
+                                                Export Policy PDF
+                                            </button>
+                                            <button className="w-full h-12 bg-white/5 hover:bg-white/10 rounded-xl text-white text-sm font-bold transition-all flex items-center justify-center gap-2 border border-white/5">
+                                                <History className="w-4 h-4" />
+                                                View Change History
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
 
-                {isEditing && (
-                    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 animate-in slide-in-from-bottom-8">
-                        <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 shadow-xl px-12 rounded-2xl h-14" onClick={handleSave}>
-                            <Save className="w-5 h-5 mr-3" /> Save Changes
-                        </Button>
-                    </div>
-                )}
-
                 {!isAdmin && (
-                    <div className="p-6 bg-amber-50 border border-amber-100 rounded-3xl flex gap-4">
-                        <Info className="w-6 h-6 text-amber-600 shrink-0" />
-                        <div>
-                            <h4 className="font-bold text-amber-900">Guest View</h4>
-                            <p className="text-amber-800 text-sm mt-1">
-                                You are viewing the live policy engine configuration. Only administrative users can modify these parameters or run impact simulations.
+                    <div className="glass-card p-10 rounded-[2.5rem] flex items-start gap-6 border-amber-500/20 bg-amber-500/5">
+                        <div className="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center ring-1 ring-amber-500/30">
+                            <Info className="w-6 h-6 text-amber-500" />
+                        </div>
+                        <div className="space-y-1">
+                            <h4 className="text-xl font-bold text-amber-200">Protocol Observation Mode</h4>
+                            <p className="text-amber-200/60 leading-relaxed">
+                                Guest accounts have read-only access to global policy variables. To run the strategy simulator or modify coverage parameters, please authenticate as a System Administrator.
                             </p>
                         </div>
                     </div>

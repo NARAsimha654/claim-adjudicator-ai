@@ -1,0 +1,70 @@
+--------------------------------
+City Medical Center
+78 Health Lane, Delhi
+GST No: 07PQRAB9012H3Z4
+--------------------------------
+Bill No: CMC20260104003        Date: 04/01/2026
+
+Patient Details:
+Name: Ravi Menon
+Contact: 7654321098
+Ref. By: Dr. Sharma
+
+PARTICULARS               AMOUNT
+--------------------------------
+Consultation Fee          ₹ 1200
+Diagnostic Tests:
+- MRI Lumbar Spine       ₹ 15000
+- Blood Test             ₹ 800
+Medicines                ₹ 2000
+--------------------------------
+Sub Total:               ₹ 19000
+GST (18%):              ₹ 3420
+--------------------------------
+TOTAL:                   ₹ 22420
+Amount in Words: Twenty Two Thousand Four Hundred and Twenty Only
+
+Payment Mode: UPI
+Transaction ID: TXN20260104003
+
+[Authorized Signatory]
+[Stamp]
+--------------------------------
+
+Prescription:
+--------------------------------
+[Logo]
+Dr. Sharma, MD Medicine
+Reg. No: DL/45678/2017
+City Medical Center, Delhi
+Phone: 011-87654321
+--------------------------------
+Date: 04/01/2026
+
+Patient Name: Ravi Menon
+Age/Sex: 42/Male
+Address: 25, Connaught Place, Delhi
+
+Chief Complaints:
+- Severe back pain
+- Numbness in legs
+
+Diagnosis:
+Suspected lumbar disc herniation
+
+Rx (Prescription):
+1. Tab. Pregabalin 75mg
+   Once daily x 10 days
+2. Inj. Methylcobalamin 1500mcg
+   Daily x 5 days
+
+Investigations Advised:
+- MRI Lumbar Spine (Pre-authorization required for MRI)
+
+Follow-up: 11/01/2026
+
+[Doctor's Signature]
+[Doctor's Stamp]
+--------------------------------
+
+Additional Note: Patient has submitted 3 other claims this month with same doctor.
